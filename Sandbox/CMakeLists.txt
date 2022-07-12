@@ -16,7 +16,6 @@ include_directories(../Blobfish/src/)
 
 #externs
 find_package(OpenGL REQUIRED)
-find_package(glfw3 3.3 REQUIRED)
 
 include_directories(../Blobfish/extern/glad/include)
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS})
