@@ -1,0 +1,3 @@
+[submodule "Blobfish/extern/glfw"]
+	path = Blobfish/extern/glfw
+	url = https://github.com/glfw/glfw
