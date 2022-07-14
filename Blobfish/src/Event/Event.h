@@ -35,6 +35,7 @@ namespace Blobfish {
         int m_category = (int) EventCategory::ENone;
     public:
         bool m_handled = false;
+
         virtual EventType GetEventType() const = 0;
 
         virtual const char *GetName() const = 0;
@@ -50,35 +51,31 @@ namespace Blobfish {
         virtual ~Event() = default;
     };
 
-    inline std::ostream& operator<<(std::ostream& os, const Event& e)
-    {
+    inline std::ostream &operator<<(std::ostream &os, const Event &e) {
         return os << e.ToString();
     }
 
-    class EventDispatcher
-    {
+    class EventDispatcher {
     public:
-        EventDispatcher(Event& event)
-                : m_Event(event)
-        {
+        EventDispatcher(Event &event)
+                : m_Event(event) {
         }
 
         // F will be deduced by the compiler
         template<typename T, typename F>
-//        requires std::regular_invocable<F, T> and std::derived_from<T, Event> and requires(T &e, F handler){
-//            {handler(e)} -> std::convertible_to<bool>;
-//        }
-        bool Dispatch(const F& func)
-        {
-            if (m_Event.GetEventType() == T::GetStaticType())
-            {
-                m_Event.m_handled |= func(static_cast<T&>(m_Event));
+        requires std::derived_from<T, Event> and requires(T &e, F handler){
+            { handler(e) } -> std::convertible_to<bool>;
+        }
+        bool Dispatch(const F &func) {
+            if (m_Event.GetEventType() == T::GetStaticType()) {
+                m_Event.m_handled |= func(static_cast<T &>(m_Event));
                 return true;
             }
             return false;
         }
+
     private:
-        Event& m_Event;
+        Event &m_Event;
     };
 
 } // Blobfish
