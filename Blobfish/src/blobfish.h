@@ -1,1 +1,2 @@
-#include "test/test.h"
+#pragma once
+#include "Core/EntryPoint.h"

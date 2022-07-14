@@ -1,3 +1,6 @@
 [submodule "Blobfish/extern/glfw"]
 	path = Blobfish/extern/glfw
 	url = https://github.com/glfw/glfw
+[submodule "Blobfish/extern/spdlog"]
+	path = Blobfish/extern/spdlog
+	url = https://github.com/gabime/spdlog.git

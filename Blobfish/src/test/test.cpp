@@ -3,6 +3,7 @@
 //
 
 #include "test.h"
+#include "../Core/BlobPCH.h"
 
 int test::run(std::string windowTitile) {
     std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
