@@ -98,7 +98,7 @@ namespace Blobfish {
         {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-            MouseMovedEvent event((float)xPos, (float)yPos);
+            MouseMovedEvent event(xPos, yPos);
             data.EventCallback(event);
         });
     }

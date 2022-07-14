@@ -37,10 +37,10 @@ namespace Blobfish {
 
     class MouseMovedEvent : public Event {
         int m_category = EventCategory::EMouse | EventCategory::EInput;
-        float m_offsetX;
-        float m_offsetY;
+        int m_offsetX;
+        int m_offsetY;
     public:
-        MouseMovedEvent(float p_offsetX, float p_OffsetY) : m_offsetX(p_offsetX), m_offsetY(p_OffsetY) {}
+        MouseMovedEvent(int p_offsetX, int p_OffsetY) : m_offsetX(p_offsetX), m_offsetY(p_OffsetY) {}
 
         DECLARE_EVENT_CLASS(EventType::MouseMoved)
 
