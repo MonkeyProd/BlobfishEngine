@@ -5,7 +5,8 @@
 
 // Implemented features:
 //  [X] Renderer: User texture binding. Use 'GLuint' OpenGL texture identifier as void*/ImTextureID. Read the FAQ about ImTextureID!
-//  [x] Renderer: Desktop GL only: Support for large meshes (64k+ vertices) with 16-bit indices.
+//  [X] Renderer: Multi-viewport support (multiple windows). Enable with 'io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable'.
+//  [x] Renderer: Large meshes support (64k+ vertices) with 16-bit indices (Desktop OpenGL only).
 
 // You can use unmodified imgui_impl_* files in your project. See examples/ folder for examples of using this.
 // Prefer including the entire imgui/ repository into your project (either as a copy or as a submodule), and only build the backends you need.
@@ -14,6 +15,7 @@
 
 // CHANGELOG
 // (minor and older changes stripped away, please see git history for details)
+//  2022-XX-XX: Platform: Added support for multiple windows via the ImGuiPlatformIO interface.
 //  2022-05-23: OpenGL: Reworking 2021-12-15 "Using buffer orphaning" so it only happens on Intel GPU, seems to cause problems otherwise. (#4468, #4825, #4832, #5127).
 //  2022-05-13: OpenGL: Fix state corruption on OpenGL ES 2.0 due to not preserving GL_ELEMENT_ARRAY_BUFFER_BINDING and vertex attribute states.
 //  2021-12-15: OpenGL: Using buffer orphaning + glBufferSubData(), seems to fix leaks with multi-viewports with some Intel HD drivers.
@@ -89,7 +91,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include <imgui.h>
+#include "imgui.h"
 #include "ImGuiOpenGL.h"
 #include <stdio.h>
 #if defined(_MSC_VER) && _MSC_VER <= 1500 // MSVC 2008 or earlier
@@ -206,6 +208,10 @@ static ImGui_ImplOpenGL3_Data* ImGui_ImplOpenGL3_GetBackendData()
     return ImGui::GetCurrentContext() ? (ImGui_ImplOpenGL3_Data*)ImGui::GetIO().BackendRendererUserData : NULL;
 }
 
+// Forward Declarations
+static void ImGui_ImplOpenGL3_InitPlatformInterface();
+static void ImGui_ImplOpenGL3_ShutdownPlatformInterface();
+
 // OpenGL vertex attribute state (for ES 1.0 and ES 2.0 only)
 #ifndef IMGUI_IMPL_OPENGL_USE_VERTEX_ARRAY
 struct ImGui_ImplOpenGL3_VtxAttribState
@@ -279,6 +285,7 @@ bool    ImGui_ImplOpenGL3_Init(const char* glsl_version)
     if (bd->GlVersion >= 320)
         io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;  // We can honor the ImDrawCmd::VtxOffset field, allowing for large meshes.
 #endif
+    io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports;  // We can create multi-viewports on the Renderer side (optional)
 
     // Store GLSL version string so we can refer to it later in case we recreate shaders.
     // Note: GLSL version is NOT the same as GL version. Leave this to NULL if unsure.
@@ -316,6 +323,9 @@ bool    ImGui_ImplOpenGL3_Init(const char* glsl_version)
     }
 #endif
 
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        ImGui_ImplOpenGL3_InitPlatformInterface();
+
     return true;
 }
 
@@ -325,6 +335,7 @@ void    ImGui_ImplOpenGL3_Shutdown()
     IM_ASSERT(bd != NULL && "No renderer backend to shutdown, or already shutdown?");
     ImGuiIO& io = ImGui::GetIO();
 
+    ImGui_ImplOpenGL3_ShutdownPlatformInterface();
     ImGui_ImplOpenGL3_DestroyDeviceObjects();
     io.BackendRendererName = NULL;
     io.BackendRendererUserData = NULL;
@@ -382,12 +393,12 @@ static void ImGui_ImplOpenGL3_SetupRenderState(ImDrawData* draw_data, int fb_wid
     if (!clip_origin_lower_left) { float tmp = T; T = B; B = tmp; } // Swap top and bottom if origin is upper left
 #endif
     const float ortho_projection[4][4] =
-    {
-        { 2.0f/(R-L),   0.0f,         0.0f,   0.0f },
-        { 0.0f,         2.0f/(T-B),   0.0f,   0.0f },
-        { 0.0f,         0.0f,        -1.0f,   0.0f },
-        { (R+L)/(L-R),  (T+B)/(B-T),  0.0f,   1.0f },
-    };
+            {
+                    { 2.0f/(R-L),   0.0f,         0.0f,   0.0f },
+                    { 0.0f,         2.0f/(T-B),   0.0f,   0.0f },
+                    { 0.0f,         0.0f,        -1.0f,   0.0f },
+                    { (R+L)/(L-R),  (T+B)/(B-T),  0.0f,   1.0f },
+            };
     glUseProgram(bd->ShaderHandle);
     glUniform1i(bd->AttribLocationTex, 0);
     glUniformMatrix4fv(bd->AttribLocationProjMtx, 1, GL_FALSE, &ortho_projection[0][0]);
@@ -687,104 +698,104 @@ bool    ImGui_ImplOpenGL3_CreateDeviceObjects()
     sscanf(bd->GlslVersionString, "#version %d", &glsl_version);
 
     const GLchar* vertex_shader_glsl_120 =
-        "uniform mat4 ProjMtx;\n"
-        "attribute vec2 Position;\n"
-        "attribute vec2 UV;\n"
-        "attribute vec4 Color;\n"
-        "varying vec2 Frag_UV;\n"
-        "varying vec4 Frag_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    Frag_UV = UV;\n"
-        "    Frag_Color = Color;\n"
-        "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
-        "}\n";
+            "uniform mat4 ProjMtx;\n"
+            "attribute vec2 Position;\n"
+            "attribute vec2 UV;\n"
+            "attribute vec4 Color;\n"
+            "varying vec2 Frag_UV;\n"
+            "varying vec4 Frag_Color;\n"
+            "void main()\n"
+            "{\n"
+            "    Frag_UV = UV;\n"
+            "    Frag_Color = Color;\n"
+            "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
+            "}\n";
 
     const GLchar* vertex_shader_glsl_130 =
-        "uniform mat4 ProjMtx;\n"
-        "in vec2 Position;\n"
-        "in vec2 UV;\n"
-        "in vec4 Color;\n"
-        "out vec2 Frag_UV;\n"
-        "out vec4 Frag_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    Frag_UV = UV;\n"
-        "    Frag_Color = Color;\n"
-        "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
-        "}\n";
+            "uniform mat4 ProjMtx;\n"
+            "in vec2 Position;\n"
+            "in vec2 UV;\n"
+            "in vec4 Color;\n"
+            "out vec2 Frag_UV;\n"
+            "out vec4 Frag_Color;\n"
+            "void main()\n"
+            "{\n"
+            "    Frag_UV = UV;\n"
+            "    Frag_Color = Color;\n"
+            "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
+            "}\n";
 
     const GLchar* vertex_shader_glsl_300_es =
-        "precision highp float;\n"
-        "layout (location = 0) in vec2 Position;\n"
-        "layout (location = 1) in vec2 UV;\n"
-        "layout (location = 2) in vec4 Color;\n"
-        "uniform mat4 ProjMtx;\n"
-        "out vec2 Frag_UV;\n"
-        "out vec4 Frag_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    Frag_UV = UV;\n"
-        "    Frag_Color = Color;\n"
-        "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
-        "}\n";
+            "precision highp float;\n"
+            "layout (location = 0) in vec2 Position;\n"
+            "layout (location = 1) in vec2 UV;\n"
+            "layout (location = 2) in vec4 Color;\n"
+            "uniform mat4 ProjMtx;\n"
+            "out vec2 Frag_UV;\n"
+            "out vec4 Frag_Color;\n"
+            "void main()\n"
+            "{\n"
+            "    Frag_UV = UV;\n"
+            "    Frag_Color = Color;\n"
+            "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
+            "}\n";
 
     const GLchar* vertex_shader_glsl_410_core =
-        "layout (location = 0) in vec2 Position;\n"
-        "layout (location = 1) in vec2 UV;\n"
-        "layout (location = 2) in vec4 Color;\n"
-        "uniform mat4 ProjMtx;\n"
-        "out vec2 Frag_UV;\n"
-        "out vec4 Frag_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    Frag_UV = UV;\n"
-        "    Frag_Color = Color;\n"
-        "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
-        "}\n";
+            "layout (location = 0) in vec2 Position;\n"
+            "layout (location = 1) in vec2 UV;\n"
+            "layout (location = 2) in vec4 Color;\n"
+            "uniform mat4 ProjMtx;\n"
+            "out vec2 Frag_UV;\n"
+            "out vec4 Frag_Color;\n"
+            "void main()\n"
+            "{\n"
+            "    Frag_UV = UV;\n"
+            "    Frag_Color = Color;\n"
+            "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
+            "}\n";
 
     const GLchar* fragment_shader_glsl_120 =
-        "#ifdef GL_ES\n"
-        "    precision mediump float;\n"
-        "#endif\n"
-        "uniform sampler2D Texture;\n"
-        "varying vec2 Frag_UV;\n"
-        "varying vec4 Frag_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    gl_FragColor = Frag_Color * texture2D(Texture, Frag_UV.st);\n"
-        "}\n";
+            "#ifdef GL_ES\n"
+            "    precision mediump float;\n"
+            "#endif\n"
+            "uniform sampler2D Texture;\n"
+            "varying vec2 Frag_UV;\n"
+            "varying vec4 Frag_Color;\n"
+            "void main()\n"
+            "{\n"
+            "    gl_FragColor = Frag_Color * texture2D(Texture, Frag_UV.st);\n"
+            "}\n";
 
     const GLchar* fragment_shader_glsl_130 =
-        "uniform sampler2D Texture;\n"
-        "in vec2 Frag_UV;\n"
-        "in vec4 Frag_Color;\n"
-        "out vec4 Out_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
-        "}\n";
+            "uniform sampler2D Texture;\n"
+            "in vec2 Frag_UV;\n"
+            "in vec4 Frag_Color;\n"
+            "out vec4 Out_Color;\n"
+            "void main()\n"
+            "{\n"
+            "    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
+            "}\n";
 
     const GLchar* fragment_shader_glsl_300_es =
-        "precision mediump float;\n"
-        "uniform sampler2D Texture;\n"
-        "in vec2 Frag_UV;\n"
-        "in vec4 Frag_Color;\n"
-        "layout (location = 0) out vec4 Out_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
-        "}\n";
+            "precision mediump float;\n"
+            "uniform sampler2D Texture;\n"
+            "in vec2 Frag_UV;\n"
+            "in vec4 Frag_Color;\n"
+            "layout (location = 0) out vec4 Out_Color;\n"
+            "void main()\n"
+            "{\n"
+            "    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
+            "}\n";
 
     const GLchar* fragment_shader_glsl_410_core =
-        "in vec2 Frag_UV;\n"
-        "in vec4 Frag_Color;\n"
-        "uniform sampler2D Texture;\n"
-        "layout (location = 0) out vec4 Out_Color;\n"
-        "void main()\n"
-        "{\n"
-        "    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
-        "}\n";
+            "in vec2 Frag_UV;\n"
+            "in vec4 Frag_Color;\n"
+            "uniform sampler2D Texture;\n"
+            "layout (location = 0) out vec4 Out_Color;\n"
+            "void main()\n"
+            "{\n"
+            "    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
+            "}\n";
 
     // Select shaders matching our GLSL versions
     const GLchar* vertex_shader = NULL;
@@ -864,6 +875,34 @@ void    ImGui_ImplOpenGL3_DestroyDeviceObjects()
     if (bd->ElementsHandle) { glDeleteBuffers(1, &bd->ElementsHandle); bd->ElementsHandle = 0; }
     if (bd->ShaderHandle)   { glDeleteProgram(bd->ShaderHandle); bd->ShaderHandle = 0; }
     ImGui_ImplOpenGL3_DestroyFontsTexture();
+}
+
+//--------------------------------------------------------------------------------------------------------
+// MULTI-VIEWPORT / PLATFORM INTERFACE SUPPORT
+// This is an _advanced_ and _optional_ feature, allowing the backend to create and handle multiple viewports simultaneously.
+// If you are new to dear imgui or creating a new binding for dear imgui, it is recommended that you completely ignore this section first..
+//--------------------------------------------------------------------------------------------------------
+
+static void ImGui_ImplOpenGL3_RenderWindow(ImGuiViewport* viewport, void*)
+{
+    if (!(viewport->Flags & ImGuiViewportFlags_NoRendererClear))
+    {
+        ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+    ImGui_ImplOpenGL3_RenderDrawData(viewport->DrawData);
+}
+
+static void ImGui_ImplOpenGL3_InitPlatformInterface()
+{
+    ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+    platform_io.Renderer_RenderWindow = ImGui_ImplOpenGL3_RenderWindow;
+}
+
+static void ImGui_ImplOpenGL3_ShutdownPlatformInterface()
+{
+    ImGui::DestroyPlatformWindows();
 }
 
 #if defined(__clang__)

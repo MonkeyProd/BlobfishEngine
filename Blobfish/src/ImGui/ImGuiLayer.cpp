@@ -273,4 +273,24 @@ namespace Blobfish {
                 return ImGuiKey_None;
         }
     }
+
+    void ImGuiLayer::Begin() {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+    }
+
+    void ImGuiLayer::End() {
+        ImGuiIO &io = ImGui::GetIO();
+        Application &app = *Application::getInstance();
+        io.DisplaySize = ImVec2(app.getWindow().GetWidth(), app.getWindow().GetHeight());
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        GLFWwindow* backup_current_context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backup_current_context);
+    }
 } // Blobfish

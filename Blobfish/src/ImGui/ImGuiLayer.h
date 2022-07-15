@@ -28,7 +28,9 @@ namespace Blobfish {
 
         void OnEvent(Event &event) override;
 
-        static ImGuiKey ImGui_ImplGlfw_KeyToImGuiKey(int key); //TODO: our own keymap
+        void Begin();
+
+        void End();
     };
 
 } // Blobfish

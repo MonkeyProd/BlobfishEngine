@@ -7,3 +7,6 @@
 [submodule "Blobfish/extern/imgui"]
 	path = Blobfish/extern/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "Blobfish/extern/glm"]
+	path = Blobfish/extern/glm
+	url = https://github.com/g-truc/glm.git

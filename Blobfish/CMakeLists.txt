@@ -19,6 +19,7 @@ include_directories(extern/glad/include)
 include_directories(extern/glfw/include)
 include_directories(extern/spdlog/include)
 include_directories(extern/imgui)
+include_directories(extern/glm/glm)
 include_directories(src)
 
 add_library(blobfish  ${GLAD_FILES} ${IMGUI_LIB_FILES} ${CORE_FILES} ${EVENT_FILES} ${IMGUI_FILES} ${PLATFORM_FILES})
@@ -26,6 +27,7 @@ target_include_directories(blobfish PUBLIC extern/imgui)
 
 add_subdirectory(extern/glfw)
 add_subdirectory(extern/spdlog)
+add_subdirectory(extern/glm)
 
 link_directories(extern/glfw)
 
