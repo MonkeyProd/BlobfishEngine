@@ -5,8 +5,10 @@
 #ifndef COMPOUND_WINDOWGLFW_H
 #define COMPOUND_WINDOWGLFW_H
 
-#include "../Core/Window.h"
-#include <GLFW/glfw3.h>
+#include "../../Core/Window.h"
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#include <Core/InputUtils.h>
 
 namespace Blobfish {
 

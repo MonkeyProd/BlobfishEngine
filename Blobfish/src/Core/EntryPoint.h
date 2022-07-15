@@ -7,6 +7,7 @@
 
 #include "BlobPCH.h"
 #include "Application.h"
+#include "ImGui/ImGuiLayer.h"
 
 extern Blobfish::Application *Blobfish::create_application();
 

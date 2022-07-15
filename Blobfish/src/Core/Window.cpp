@@ -3,7 +3,7 @@
 //
 
 #include "Window.h"
-#include "../Platform/WindowGLFW.h"
+#include "../Platform/GLFW/WindowGLFW.h"
 
 namespace Blobfish {
     Window *Blobfish::Window::Create(const Blobfish::WindowProps &props) {

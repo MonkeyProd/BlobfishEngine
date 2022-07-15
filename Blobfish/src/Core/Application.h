@@ -11,6 +11,7 @@
 #include "LayerStack.h"
 #include "Timestep.h"
 #include "TimeUtils.h"
+#include "InputUtils.h"
 
 #define BLOB_BIND(func) std::bind(&Application::func, this, std::placeholders::_1)
 
@@ -18,16 +19,28 @@ namespace Blobfish {
     class Application {
     protected:
         bool m_running = true;
-        Window* m_window = nullptr;
+        Window *m_window = nullptr;
         LayerStack m_layerStack;
         float m_LastFrameTime = 0.0f;
+        static Application *s_instance;
     public:
         Application();
+
         void run();
+
         void OnEvent(Event &e);
+
         void OnUpdate();
-        void PushLayer(Layer* layer);
-        void PushOverlay(Layer* layer);
+
+        void PushLayer(Layer *layer);
+
+        void PushOverlay(Layer *layer);
+
+        Window &getWindow() const { return *m_window; }
+
+        static Application *getInstance() {
+            return s_instance;
+        }
     };
 
     Application *create_application();

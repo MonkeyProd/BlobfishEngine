@@ -23,10 +23,12 @@ namespace Blobfish {
         void PushLayer(Layer *layer){
             m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
             m_LayerInsertIndex++;
+            layer->OnAttach();
         }
 
         void PushOverlay(Layer *overlay){
             m_Layers.emplace_back(overlay);
+            overlay->OnAttach();
         }
 
         void PopLayer(Layer *layer){
@@ -37,6 +39,7 @@ namespace Blobfish {
                 m_Layers.erase(it);
                 m_LayerInsertIndex--;
             }
+            layer->OnDetach();
         }
 
         void PopOverlay(Layer *overlay){
@@ -46,6 +49,7 @@ namespace Blobfish {
                 overlay->OnDetach();
                 m_Layers.erase(it);
             }
+            overlay->OnDetach();
         }
 
         std::vector<Layer *>::iterator begin() { return m_Layers.begin(); }

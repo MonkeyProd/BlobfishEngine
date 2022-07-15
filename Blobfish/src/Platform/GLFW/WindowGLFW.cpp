@@ -16,12 +16,9 @@ namespace Blobfish {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         m_window = glfwCreateWindow(m_props.Width, m_props.Height, m_props.Title.c_str(), NULL, NULL);
         glfwMakeContextCurrent(m_window);
-        if (m_window == NULL) {
-            BLOB_LOG_CRITICAL("GLFW WINDOW NOT CREATED");
-            glfwTerminate();
-        } else {
-            BLOB_LOG_DEBUG("GLFW WINDOW SUCCESSFULLY CREATED");
-        }
+        BLOB_ASSERT((m_window!=NULL), "GLFW WINDOW INIT FAILED");
+        int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+        BLOB_ASSERT(status, "GLAD INIT FAILED");
         glfwSetWindowUserPointer(m_window, &m_Data);
         SetVSync(true);
 
@@ -122,6 +119,7 @@ namespace Blobfish {
 
     void WindowGLFW::OnUpdate() {
         glfwPollEvents();
+        glfwSwapBuffers(m_window);
     }
 
     void WindowGLFW::SetEventCallback(const Window::EventCallbackFn &callback) {
