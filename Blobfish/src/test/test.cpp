@@ -7,7 +7,7 @@
 
 int test::run(std::string windowTitile) {
     std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
-    // Init GLFW
+    // Init GLFF
     glfwInit();
     // Set all the required options for GLFW
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -19,6 +19,7 @@ int test::run(std::string windowTitile) {
     // Create a GLFWwindow object that we can use for GLFW's functions
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, windowTitile.c_str(), NULL, NULL);
     glfwMakeContextCurrent(window);
+
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;

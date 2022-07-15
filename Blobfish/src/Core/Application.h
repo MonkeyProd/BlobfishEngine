@@ -12,6 +12,7 @@
 #include "Timestep.h"
 #include "TimeUtils.h"
 #include "InputUtils.h"
+#include "ImGui/ImGuiLayer.h"
 
 #define BLOB_BIND(func) std::bind(&Application::func, this, std::placeholders::_1)
 
@@ -21,6 +22,7 @@ namespace Blobfish {
         bool m_running = true;
         Window *m_window = nullptr;
         LayerStack m_layerStack;
+        ImGuiLayer *m_imGuiLayer;
         float m_LastFrameTime = 0.0f;
         static Application *s_instance;
     public:

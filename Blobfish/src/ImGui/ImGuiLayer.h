@@ -7,7 +7,6 @@
 
 #include "../Core/Layer.h"
 #include "../Platform/OpenGL/ImGuiOpenGL.h"
-#include <GLFW/glfw3.h>
 #include "../Platform/OpenGL/ImGuiGLFW.h"
 
 namespace Blobfish {

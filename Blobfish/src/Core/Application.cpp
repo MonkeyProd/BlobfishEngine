@@ -12,6 +12,9 @@ namespace Blobfish {
         s_instance = this;
         m_window = Window::Create({"TEST TITLE",2000,1600});
         m_window->SetEventCallback(BLOB_BIND(OnEvent));
+
+        m_imGuiLayer = new ImGuiLayer();
+        PushOverlay(m_imGuiLayer);
     }
 
     void Application::run() {
@@ -26,6 +29,12 @@ namespace Blobfish {
             for (Layer *layer: m_layerStack) {
                 layer->OnUpdate(timestep);
             }
+
+            m_imGuiLayer->Begin();
+            for(Layer * layer: m_layerStack){
+                layer->OnImGuiRender();
+            }
+            m_imGuiLayer->End();
             m_window->OnUpdate();
         }
     }
