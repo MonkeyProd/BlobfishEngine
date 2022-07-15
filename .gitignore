@@ -5,7 +5,6 @@ Sandbox/cmake-build-debug
 
 # Created by https://www.toptal.com/developers/gitignore/api/cmake,c++,c,python,clion+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=cmake,c++,c,python,clion+all
-
 ### C ###
 # Prerequisites
 *.d
