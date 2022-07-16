@@ -71,6 +71,7 @@ namespace bf {
             float time = Time::GetTime();
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime = time;
+            m_shader->setUniform1f("iTime", time);
 
             for (Layer *layer: m_layerStack) {
                 layer->OnUpdate(timestep);
