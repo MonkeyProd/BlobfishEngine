@@ -5,8 +5,8 @@
 #include "Window.h"
 #include "../Platform/GLFW/WindowGLFW.h"
 
-namespace Blobfish {
-    Window *Blobfish::Window::Create(const Blobfish::WindowProps &props) {
+namespace bf {
+    Window *bf::Window::Create(const bf::WindowProps &props) {
         return new WindowGLFW(props); //TODO: make unique
     }
 }

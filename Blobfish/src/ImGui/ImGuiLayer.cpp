@@ -8,7 +8,7 @@
 
 #include "../Core/Application.h"
 
-namespace Blobfish {
+namespace bf {
     void ImGuiLayer::OnAttach() {
         ImGui::CreateContext();
         ImGuiIO &io = ImGui::GetIO();
@@ -22,7 +22,7 @@ namespace Blobfish {
 
         ImGui_ImplGlfw_InitForOpenGL((GLFWwindow *) Application::getInstance()->getWindow().GetNativeWindow(), true);
         ImGui_ImplOpenGL3_Init("#version 330");
-        BLOB_LOG_DEBUG("LAYER '{0}' ATTACHED SUCCESSFULLY", GetName());
+        BF_LOG_DEBUG("LAYER '{0}' ATTACHED SUCCESSFULLY", GetName());
     }
 
     void ImGuiLayer::OnDetach() {

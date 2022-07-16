@@ -10,10 +10,11 @@
 #include <algorithm>
 #include <memory>
 #include <utility>
+#include <unordered_map>
 #include "Logger.h"
 #include "KeyCodes.h"
 
 #define BIT(x) (1 << x)
-#define BLOB_ASSERT(predicate, ...) if(not predicate){BLOB_LOG_CRITICAL(__VA_ARGS__); std::terminate();}
+#define BF_ASSERT(predicate, ...) if(not predicate){BF_LOG_CRITICAL(__VA_ARGS__); std::terminate();}
 
 #endif //COMPOUND_BLOBPCH_H

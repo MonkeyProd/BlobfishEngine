@@ -6,6 +6,6 @@
 #include "GLFW/glfw3.h"
 
 
-float Blobfish::Time::GetTime() {
+float bf::Time::GetTime() {
     return glfwGetTime();
 }

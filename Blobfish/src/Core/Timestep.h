@@ -5,7 +5,7 @@
 #ifndef COMPOUND_TIMESTEP_H
 #define COMPOUND_TIMESTEP_H
 
-namespace Blobfish {
+namespace bf {
     class Timestep {
     public:
         Timestep(float time = 0.0f)

@@ -9,14 +9,14 @@
 #include "Application.h"
 #include "ImGui/ImGuiLayer.h"
 
-extern Blobfish::Application *Blobfish::create_application();
+extern bf::Application *bf::create_application();
 
 int main() {
     spdlog::set_level(spdlog::level::trace);
-    Blobfish::Application *app = Blobfish::create_application();
-    BLOB_LOG_DEBUG("APPLICATION CREATED");
+    bf::Application *app = bf::create_application();
+    BF_LOG_DEBUG("APPLICATION CREATED");
     app->run();
-    BLOB_LOG_DEBUG("SUCCESSFUL EXIT");
+    BF_LOG_DEBUG("SUCCESSFUL EXIT");
     return 0;
 }
 

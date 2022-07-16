@@ -8,7 +8,7 @@
 #include "Event.h"
 #include "../Core/BlobPCH.h"
 
-namespace Blobfish {
+namespace bf {
     class MouseButtonPressedEvent : public Event {
         int m_category = EventCategory::EMouse | EventCategory::EMouseButton | EventCategory::EInput;
         int m_mouseButton;

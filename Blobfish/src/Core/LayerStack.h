@@ -7,7 +7,7 @@
 
 #include "Layer.h"
 
-namespace Blobfish {
+namespace bf {
 
     class LayerStack {
     public:

@@ -10,7 +10,7 @@
 #include "GLFW/glfw3.h"
 #include <Core/InputUtils.h>
 
-namespace Blobfish {
+namespace bf {
 
     class WindowGLFW : public Window {
     public:

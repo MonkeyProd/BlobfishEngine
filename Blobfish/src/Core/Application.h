@@ -13,10 +13,11 @@
 #include "TimeUtils.h"
 #include "InputUtils.h"
 #include "ImGui/ImGuiLayer.h"
+#include <Renderer/Shader.h>
 
 #define BLOB_BIND(func) std::bind(&Application::func, this, std::placeholders::_1)
 
-namespace Blobfish {
+namespace bf {
     class Application {
     protected:
         bool m_running = true;
@@ -25,6 +26,9 @@ namespace Blobfish {
         ImGuiLayer *m_imGuiLayer;
         float m_LastFrameTime = 0.0f;
         static Application *s_instance;
+
+        unsigned int m_vertexArray, m_vertexBuffer, m_indexBuffer;
+        Shader *m_shader;
     public:
         Application();
 
@@ -39,6 +43,8 @@ namespace Blobfish {
         void PushOverlay(Layer *layer);
 
         Window &getWindow() const { return *m_window; }
+
+        Shader &getShader() const { return *m_shader; }
 
         static Application *getInstance() {
             return s_instance;

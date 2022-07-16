@@ -9,7 +9,7 @@
 #include "../Event/Event.h"
 #include "Timestep.h"
 
-namespace Blobfish {
+namespace bf {
 
     class Layer {
     public:
@@ -17,15 +17,15 @@ namespace Blobfish {
 
         virtual ~Layer() = default;
 
-        virtual void OnAttach() { BLOB_LOG_TRACE("Layer '{0}' attach", m_DebugName);}
+        virtual void OnAttach() { BF_LOG_TRACE("Layer '{0}' attach", m_DebugName);}
 
-        virtual void OnDetach() {BLOB_LOG_TRACE("Layer '{0}' detach", m_DebugName);}
+        virtual void OnDetach() {BF_LOG_TRACE("Layer '{0}' detach", m_DebugName);}
 
         virtual void OnUpdate(Timestep ts) {}
 
         virtual void OnImGuiRender() {}
 
-        virtual void OnEvent(Event &event) {BLOB_LOG_TRACE("Layer '{0}' event {1}", m_DebugName, event);}
+        virtual void OnEvent(Event &event) {BF_LOG_TRACE("Layer '{0}' event {1}", m_DebugName, event);}
 
         const std::string &GetName() const { return m_DebugName; }
 

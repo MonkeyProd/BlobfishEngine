@@ -7,7 +7,7 @@
 
 #include "../Core/BlobPCH.h"
 
-namespace Blobfish {
+namespace bf {
 
     enum class EventType : char {
         None = 0,

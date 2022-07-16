@@ -5,7 +5,7 @@
 #ifndef COMPOUND_TIMEUTILS_H
 #define COMPOUND_TIMEUTILS_H
 
-namespace Blobfish {
+namespace bf {
 
     class Time
     {

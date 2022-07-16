@@ -8,7 +8,7 @@
 #include "Event.h"
 #include "../Core/BlobPCH.h"
 
-namespace Blobfish {
+namespace bf {
     class WindowCloseEvent:public Event{
         int m_category = EventCategory::EWindow;
     public:

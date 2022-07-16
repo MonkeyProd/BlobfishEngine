@@ -10,8 +10,9 @@
 #include "../Event/WindowEvent.h"
 #include "../Event/KeyEvent.h"
 #include "../Event/MouseEvent.h"
+#include <Renderer/RenderContext.h>
 
-namespace Blobfish {
+namespace bf {
     struct WindowProps {
         std::string Title;
         uint32_t Width;
@@ -53,6 +54,7 @@ namespace Blobfish {
 
     protected:
         WindowProps m_props;
+        RenderContext *m_context;
     };
 
 }

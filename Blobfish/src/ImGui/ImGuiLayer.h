@@ -9,7 +9,7 @@
 #include "../Platform/OpenGL/ImGuiOpenGL.h"
 #include "../Platform/OpenGL/ImGuiGLFW.h"
 
-namespace Blobfish {
+namespace bf {
 
     class ImGuiLayer : public Layer {
     public:

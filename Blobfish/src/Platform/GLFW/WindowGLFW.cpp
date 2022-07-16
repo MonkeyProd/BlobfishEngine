@@ -4,7 +4,7 @@
 
 #include "WindowGLFW.h"
 
-namespace Blobfish {
+namespace bf {
     WindowGLFW::WindowGLFW(const WindowProps &props) {
         m_props = props;
         m_Data.Title = props.Title;
@@ -14,11 +14,14 @@ namespace Blobfish {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
         m_window = glfwCreateWindow(m_props.Width, m_props.Height, m_props.Title.c_str(), NULL, NULL);
-        glfwMakeContextCurrent(m_window);
-        BLOB_ASSERT((m_window!=NULL), "GLFW WINDOW INIT FAILED");
-        int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-        BLOB_ASSERT(status, "GLAD INIT FAILED");
+
+
+        m_context = RenderContext::Create(m_window);
+        m_context->init();
+
+
         glfwSetWindowUserPointer(m_window, &m_Data);
         SetVSync(true);
 
@@ -119,7 +122,7 @@ namespace Blobfish {
 
     void WindowGLFW::OnUpdate() {
         glfwPollEvents();
-        glfwSwapBuffers(m_window);
+        m_context->swapBuffers();
     }
 
     void WindowGLFW::SetEventCallback(const Window::EventCallbackFn &callback) {

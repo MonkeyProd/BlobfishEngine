@@ -7,7 +7,7 @@
 
 #include "BlobPCH.h"
 
-namespace Blobfish{
+namespace bf{
         class Input{
             public:
             static bool IsKeyPressed(int key);
