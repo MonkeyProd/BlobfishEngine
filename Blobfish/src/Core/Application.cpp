@@ -38,25 +38,23 @@ namespace bf {
                                            "}\0";
         m_shader = Shader::Create("test shader", vertexShaderSource, fragmentShaderSource);
 
+
+        //vertex array
         glGenVertexArrays(1, &m_vertexArray);
         glBindVertexArray(m_vertexArray);
 
-        glGenBuffers(1, &m_vertexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-
-        float vertices[3 * 3] = {
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                0.0f, 0.5f, 0.0f
+        float vertices[3 * 2] = {
+                -0.5f, -0.5f,
+                0.5f, -0.5f,
+                0.0f, 0.5f
         };
 
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-        glGenBuffers(1, &m_indexBuffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
+        // vertex buffer
+        m_vertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
+
+        //index buffer
         unsigned int indices[3] = {0, 1, 2};
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        m_indexBuffer = IndexBuffer::Create(indices, 3);
     }
 
     void Application::run() {
