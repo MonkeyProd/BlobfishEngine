@@ -19,8 +19,14 @@ namespace bf {
         void bind() const override;
 
         void unbind() const override;
+
+        const BufferLayout &GetLayout() const override;
+
+        void SetLayout(const BufferLayout &layout) override;
+
     private:
         unsigned int m_id;
+        BufferLayout m_layout;
     };
 
     class IndexBufferOpenGL : public IndexBuffer {

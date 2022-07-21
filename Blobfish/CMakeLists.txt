@@ -5,7 +5,7 @@ add_definitions(-DDEBUG=1)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(GLAD_FILES extern/glad/src/glad.c src/Renderer/RenderContext.h src/Platform/OpenGL/RenderContextOpenGl.cpp src/Platform/OpenGL/RenderContextOpenGl.h src/Renderer/RenderContext.cpp src/Renderer/Shader.cpp src/Renderer/Shader.h src/Platform/OpenGL/ShaderOpenGL.cpp src/Platform/OpenGL/ShaderOpenGL.h src/Renderer/Buffer.cpp src/Renderer/Buffer.h src/Platform/OpenGL/BufferOpenGl.cpp src/Platform/OpenGL/BufferOpenGl.h)
+set(GLAD_FILES extern/glad/src/glad.c src/Renderer/RenderContext.h src/Platform/OpenGL/RenderContextOpenGl.cpp src/Platform/OpenGL/RenderContextOpenGl.h src/Renderer/RenderContext.cpp src/Renderer/Shader.cpp src/Renderer/Shader.h src/Platform/OpenGL/ShaderOpenGL.cpp src/Platform/OpenGL/ShaderOpenGL.h src/Renderer/Buffer.cpp src/Renderer/Buffer.h src/Platform/OpenGL/BufferOpenGl.cpp src/Platform/OpenGL/BufferOpenGl.h src/Renderer/VertexArray.cpp src/Renderer/VertexArray.h src/Platform/OpenGL/VertexArrayOpenGL.cpp src/Platform/OpenGL/VertexArrayOpenGL.h)
 
 file(GLOB IMGUI_LIB_FILES extern/imgui/**.cpp)
 file(GLOB CORE_FILES src/Core/**.cpp core/**.h)

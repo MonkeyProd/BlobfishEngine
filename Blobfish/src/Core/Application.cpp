@@ -11,50 +11,101 @@ namespace bf {
     Application::Application() {
         BF_ASSERT(not s_instance, "APPLICATION ALREADY EXISTS");
         s_instance = this;
-        m_window = Window::Create({"TEST TITLE", 2000, 1600});
+        m_window = Window::Create({"TEST TITLE", 800, 600});
         m_window->SetEventCallback(BLOB_BIND(OnEvent));
 
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
 
-        const char *vertexShaderSource = "#version 330 core\n"
-                                         "layout (location = 0) in vec3 aPos;\n"
-                                         "out vec3 rPos;\n"
-                                         "void main()\n"
-                                         "{\n"
-                                         "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                         "   rPos = aPos;\n"
-                                         "}\0";
-
-        const char *fragmentShaderSource = "#version 330 core\n"
-                                           "out vec4 FragColor;\n"
-                                           "in vec3 rPos;\n"
-                                           "uniform float iTime;\n"
-                                           "uniform vec3 iColors;\n"
-                                           "\n"
-                                           "void main()\n"
-                                           "{\n"
-                                           "    FragColor = vec4(iColors.x*(cos(iTime)/2)+0.2, iColors.y*(cos(iTime)/2)+0.2, iColors.z*(cos(iTime)/2)+0.2, 1.0f);\n"
-                                           "}\0";
-        m_shader = Shader::Create("test shader", vertexShaderSource, fragmentShaderSource);
-
-
         //vertex array
-        glGenVertexArrays(1, &m_vertexArray);
-        glBindVertexArray(m_vertexArray);
+        m_vertexArray = VertexArray::Create();
 
-        float vertices[3 * 2] = {
-                -0.5f, -0.5f,
-                0.5f, -0.5f,
-                0.0f, 0.5f
+        float vertices[] = {
+                -0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 1.0f,
+                0.5f, -0.5f, 0.0f, 1.0f, 0.5f, 0.0f,
+                0.0f, 0.5f, 0.0f, 0.0f, 0.5f, 0.0f
         };
 
         // vertex buffer
         m_vertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
 
+        m_vertexBuffer->SetLayout({
+                                          {ShaderDataType::Float3, "aPos"},
+                                          {ShaderDataType::Float3, "aColor"}
+                                  });
+
         //index buffer
         unsigned int indices[3] = {0, 1, 2};
         m_indexBuffer = IndexBuffer::Create(indices, 3);
+
+        m_vertexArray->AddVertexBuffer(m_vertexBuffer);
+        m_vertexArray->SetIndexBuffer(m_indexBuffer);
+
+        const char *vertexShaderSource = "#version 330 core\n"
+                                         "layout (location = 0) in vec3 aPos;\n"
+                                         "layout (location = 1) in vec3 aColor;\n"
+                                         "out vec3 rPos;\n"
+                                         "out vec3 rColor;\n"
+                                         "void main()\n"
+                                         "{\n"
+                                         "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                         "   rPos = aPos;\n"
+                                         "   rColor = aColor;\n"
+                                         "}\0";
+
+        const char *fragmentShaderSource = "#version 330 core\n"
+                                           "out vec4 FragColor;\n"
+                                           "in vec3 rPos;\n"
+                                           "in vec3 rColor;\n"
+                                           "uniform float iTime;\n"
+                                           "uniform vec3 iColors;\n"
+                                           "\n"
+                                           "void main()\n"
+                                           "{\n"
+                                           "    FragColor = vec4(rColor.x, rColor.y, rColor.z + iColors.z * cos(iTime*2), 1.0f);\n"
+                                           "}\0";
+        m_shader = Shader::Create("test shader", vertexShaderSource, fragmentShaderSource);
+
+
+        //BOX
+        m_BoxvertexArray = VertexArray::Create();
+
+        float verticesBOX[] = {
+                -0.5f, -0.5f, 0.0f,
+                0.5f, -0.5f, 0.0f,
+                -0.5f, 0.5f, 0.0f,
+                0.5f, 0.5f, 0.0f,
+        };
+
+        // vertex buffer
+        m_BoxvertexBuffer = VertexBuffer::Create(verticesBOX, sizeof(verticesBOX));
+
+        m_BoxvertexBuffer->SetLayout({
+                                             {ShaderDataType::Float3, "aPos"}
+                                     });
+
+        //index buffer
+        unsigned int indicesBOX[6] = {0, 1, 2,2,1,3};
+        m_iBoxndexBuffer = IndexBuffer::Create(indicesBOX, 6);
+
+        m_BoxvertexArray->AddVertexBuffer(m_BoxvertexBuffer);
+        m_BoxvertexArray->SetIndexBuffer(m_iBoxndexBuffer);
+
+        const char *vertexShaderSourceBOX = "#version 330 core\n"
+                                         "layout (location = 0) in vec3 aPos;\n"
+                                         "void main()\n"
+                                         "{\n"
+                                         "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                         "}\0";
+
+        const char *fragmentShaderSourceBOX = "#version 330 core\n"
+                                           "out vec4 FragColor;\n"
+                                           "\n"
+                                           "void main()\n"
+                                           "{\n"
+                                           "    FragColor = vec4(0.5f, 0.3f, 0.6f, 1.0f);\n"
+                                           "}\0";
+        m_sBoxhader = Shader::Create("BOX shader", vertexShaderSourceBOX, fragmentShaderSourceBOX);
     }
 
     void Application::run() {
@@ -62,9 +113,13 @@ namespace bf {
             glClearColor(0.5, 0.5, 0.5, 1); //TODO
             glClear(GL_COLOR_BUFFER_BIT);
 
+            m_sBoxhader->Bind();
+            m_BoxvertexArray->Bind();
+            glDrawElements(GL_TRIANGLES, m_BoxvertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
             m_shader->Bind();
-            glBindVertexArray(m_vertexArray);
-            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+            m_vertexArray->Bind();
+            glDrawElements(GL_TRIANGLES, m_vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
             float time = Time::GetTime();
             Timestep timestep = time - m_LastFrameTime;
