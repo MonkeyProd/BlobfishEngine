@@ -3,9 +3,11 @@
 //
 
 #include "WindowGLFW.h"
+#include <Tracy.hpp>
 
 namespace bf {
     WindowGLFW::WindowGLFW(const WindowProps &props) {
+        ZoneScoped;
         m_props = props;
         m_Data.Title = props.Title;
         m_Data.Height = props.Height;
@@ -104,6 +106,7 @@ namespace bf {
     }
 
     void WindowGLFW::SetVSync(bool enabled) {
+        ZoneScoped;
         if (enabled)
             glfwSwapInterval(1);
         else
@@ -112,24 +115,29 @@ namespace bf {
     }
 
     bool WindowGLFW::IsVSync() const {
+        ZoneScoped;
         return m_Data.VSync;
     }
 
     WindowGLFW::~WindowGLFW() {
+        ZoneScoped;
         glfwDestroyWindow(m_window);
         glfwTerminate();
     }
 
     void WindowGLFW::OnUpdate() {
+        ZoneScoped;
         glfwPollEvents();
         m_context->swapBuffers();
     }
 
     void WindowGLFW::SetEventCallback(const Window::EventCallbackFn &callback) {
+        ZoneScoped;
         m_Data.EventCallback = callback;
     }
 
     void *WindowGLFW::GetNativeWindow() const {
+        ZoneScoped;
         return m_window;
     }
 } // Blobfish

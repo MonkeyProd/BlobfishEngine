@@ -7,6 +7,7 @@
 
 namespace bf {
     VertexArray *VertexArray::Create() {
+        ZoneScoped;
         return new VertexArrayOpenGL;
     }
 } // bf

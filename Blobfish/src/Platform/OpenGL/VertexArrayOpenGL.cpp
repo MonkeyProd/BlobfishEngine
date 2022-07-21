@@ -8,6 +8,7 @@ namespace bf {
 
     static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
     {
+        ZoneScoped;
         switch (type)
         {
             case ShaderDataType::Float:    return GL_FLOAT;
@@ -28,19 +29,22 @@ namespace bf {
     }
 
     VertexArrayOpenGL::VertexArrayOpenGL() {
-//        glCreateVertexArrays(1, &m_id);
+        ZoneScoped;
         glGenVertexArrays(1, &m_id);
     }
 
     void VertexArrayOpenGL::Bind() const {
+        ZoneScoped;
         glBindVertexArray(m_id);
     }
 
     void VertexArrayOpenGL::Unbind() const {
+        ZoneScoped;
         glBindVertexArray(0);
     }
 
     void VertexArrayOpenGL::AddVertexBuffer(VertexBuffer *vertexBuffer) {
+        ZoneScoped;
         BF_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout");
         glBindVertexArray(m_id);
         vertexBuffer->bind();
@@ -101,16 +105,19 @@ namespace bf {
     }
 
     void VertexArrayOpenGL::SetIndexBuffer(IndexBuffer *indexBuffer) {
+        ZoneScoped;
         glBindVertexArray(m_id);
         indexBuffer->bind();
         m_indexBuffer = indexBuffer;
     }
 
     const std::vector<VertexBuffer*> &VertexArrayOpenGL::GetVertexBuffers() const {
+        ZoneScoped;
         return m_vertexBuffers;
     }
 
     const IndexBuffer *VertexArrayOpenGL::GetIndexBuffer() const {
+        ZoneScoped;
         return m_indexBuffer;
     }
 

@@ -4,21 +4,27 @@
 
 #include "ShaderOpenGL.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace bf {
     void ShaderOpenGL::Bind() const {
+        ZoneScoped;
         glUseProgram(m_RendererID);
     }
 
     void ShaderOpenGL::Unbind() const {
+        ZoneScoped;
         glUseProgram(0);
     }
 
     void ShaderOpenGL::setUniform1f(std::string name, float uniform) {
+        ZoneScoped;
         GLint uniform_loc = glGetUniformLocation(m_RendererID, name.c_str());
         glUniform1f(uniform_loc, uniform);
     }
 
     void ShaderOpenGL::setUniform3f(std::string name, float *uniform) {
+        ZoneScoped;
         GLint uniform_loc = glGetUniformLocation(m_RendererID, name.c_str());
         glUniform3f(uniform_loc, uniform[0], uniform[1], uniform[2]);
     }
@@ -26,6 +32,7 @@ namespace bf {
 
     ShaderOpenGL::ShaderOpenGL(const std::string &name, const std::string &vertexSource,
                                const std::string &fragmentSource) {
+        ZoneScoped;
         m_name = name;
 
         // Create an empty vertex shader handle
@@ -127,5 +134,11 @@ namespace bf {
         // Always detach shaders after a successful link.
         glDetachShader(m_RendererID, vertexShader);
         glDetachShader(m_RendererID, fragmentShader);
+    }
+
+    void ShaderOpenGL::setUniformMat4(const std::string& name, const glm::mat4 &matrix) {
+        ZoneScoped;
+        auto location = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 } // bf

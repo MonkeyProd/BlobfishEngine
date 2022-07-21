@@ -25,7 +25,7 @@ namespace bf {
 
         virtual void OnImGuiRender() {}
 
-        virtual void OnEvent(Event &event) {BF_LOG_TRACE("Layer '{0}' event {1}", m_DebugName, event);}
+        virtual void OnEvent(Event &event) {}
 
         const std::string &GetName() const { return m_DebugName; }
 

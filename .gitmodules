@@ -10,3 +10,6 @@
 [submodule "Blobfish/extern/glm"]
 	path = Blobfish/extern/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Blobfish/extern/tracy"]
+	path = Blobfish/extern/tracy
+	url = https://github.com/wolfpld/tracy.git

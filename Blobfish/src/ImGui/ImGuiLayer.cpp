@@ -7,9 +7,11 @@
 #include <imgui.h>
 
 #include "../Core/Application.h"
+#include <Tracy.hpp>
 
 namespace bf {
     void ImGuiLayer::OnAttach() {
+        ZoneScoped;
         ImGui::CreateContext();
         ImGuiIO &io = ImGui::GetIO();
         (void) io;
@@ -26,21 +28,25 @@ namespace bf {
     }
 
     void ImGuiLayer::OnDetach() {
+        ZoneScoped;
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
 
     void ImGuiLayer::OnUpdate(Timestep ts) {
+        ZoneScoped;
 
     }
 
     void ImGuiLayer::OnImGuiRender() {
+        ZoneScoped;
         static bool show = true;
         ImGui::ShowDemoWindow(&show);
     }
 
     void ImGuiLayer::OnEvent(Event &event) {
+        ZoneScoped;
         Layer::OnEvent(event);
     }
 
@@ -48,12 +54,14 @@ namespace bf {
     }
 
     void ImGuiLayer::Begin() {
+        ZoneScoped;
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
     }
 
     void ImGuiLayer::End() {
+        ZoneScoped;
         ImGuiIO &io = ImGui::GetIO();
         Application &app = *Application::getInstance();
         io.DisplaySize = ImVec2(app.getWindow().GetWidth(), app.getWindow().GetHeight());

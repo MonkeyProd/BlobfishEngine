@@ -4,8 +4,10 @@
 
 #include "RenderContext.h"
 #include "Platform/OpenGL/RenderContextOpenGl.h"
+#include <Core/BlobPCH.h>
 
 bf::RenderContext *bf::RenderContext::Create(void *window) {
+    ZoneScoped;
     return new RenderContextOpenGL(static_cast<GLFWwindow *>(window));
     //TODO: API CHOOSE
     /*

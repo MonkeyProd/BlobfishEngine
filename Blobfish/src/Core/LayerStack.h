@@ -14,6 +14,7 @@ namespace bf {
         LayerStack() = default;
 
         ~LayerStack(){
+            ZoneScoped;
             for (Layer *layer: m_Layers){
                 layer->OnDetach();
                 delete layer;
@@ -21,17 +22,20 @@ namespace bf {
         }
 
         void PushLayer(Layer *layer){
+            ZoneScoped;
             m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
             m_LayerInsertIndex++;
             layer->OnAttach();
         }
 
         void PushOverlay(Layer *overlay){
+            ZoneScoped;
             m_Layers.emplace_back(overlay);
             overlay->OnAttach();
         }
 
         void PopLayer(Layer *layer){
+            ZoneScoped;
             auto it = std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer);
             if (it != m_Layers.begin() + m_LayerInsertIndex)
             {
@@ -43,6 +47,7 @@ namespace bf {
         }
 
         void PopOverlay(Layer *overlay){
+            ZoneScoped;
             auto it = std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), overlay);
             if (it != m_Layers.end())
             {

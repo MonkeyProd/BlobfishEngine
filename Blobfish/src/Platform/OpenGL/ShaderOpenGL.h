@@ -22,6 +22,8 @@ namespace bf {
 
         void setUniform3f(std::string name, float *uniform) override;
 
+        void setUniformMat4(const std::string& name, const glm::mat4 &matrix) override;
+
         void Unbind() const override;
     private:
         GLuint m_RendererID;

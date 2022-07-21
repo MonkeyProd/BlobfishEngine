@@ -13,6 +13,7 @@ namespace bf {
     };
 
     static unsigned int ShaderDataTypeSize(ShaderDataType type) {
+        ZoneScoped;
         switch (type) {
             case ShaderDataType::Float:
                 return 4;
@@ -56,6 +57,7 @@ namespace bf {
         }
 
         uint32_t GetComponentCount() const {
+            ZoneScoped;
             switch (Type) {
                 case ShaderDataType::Float:
                     return 1;
@@ -109,6 +111,7 @@ namespace bf {
 
     private:
         void CalculateOffsetsAndStride() {
+            ZoneScoped;
             size_t offset = 0;
             m_Stride = 0;
             for (auto &element: m_Elements) {
