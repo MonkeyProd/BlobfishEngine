@@ -2,17 +2,31 @@
 #include <Platform/OpenGL/ShaderOpenGL.h>
 #include <sstream>
 #include <fstream>
+#include <Renderer/Renderer.h>
 
 namespace bf {
     Shader *Shader::Create(const std::string &name, const std::string &vertexSrc, const std::string &fragmentSrc) {
-        //TODO: API CHOOSE
+        //TODO: use smart pointers
         ZoneScoped;
-        return new ShaderOpenGL(name, vertexSrc, fragmentSrc);
+        switch (Renderer::getAPI()) {
+            case RendererAPI::API::None:
+                BF_ASSERT(false, "RendererAPI::API::None is currently not supported!")
+            case RendererAPI::API::OpenGL:
+                return new ShaderOpenGL(name, vertexSrc, fragmentSrc);
+        }
+        BF_ASSERT(false, "Unknown RendererAPI!");
     }
 
     Shader *Shader::Create(const std::string &name, const std::string &filepath) {
+        //TODO: use smart pointers
         auto [vertexSrc, fragmentSrc] = ReadFile(filepath);
-        return new ShaderOpenGL(name, vertexSrc, fragmentSrc);
+        switch (Renderer::getAPI()) {
+            case RendererAPI::API::None:
+                BF_ASSERT(false, "RendererAPI::API::None is currently not supported!")
+            case RendererAPI::API::OpenGL:
+                return new ShaderOpenGL(name, vertexSrc, fragmentSrc);
+        }
+        BF_ASSERT(false, "Unknown RendererAPI!");
     }
 
     Shader::ShaderSource Shader::ReadFile(const std::string &filepath) {

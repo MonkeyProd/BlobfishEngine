@@ -27,7 +27,6 @@ namespace bf{
     class Texture2D : public Texture
     {
     public:
-        //todo CHOOSE API
         static Texture2D* Create(unsigned int width, unsigned int height);
 
         static Texture2D* Create(const std::string& path);
