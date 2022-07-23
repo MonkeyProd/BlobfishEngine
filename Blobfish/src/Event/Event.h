@@ -13,7 +13,8 @@ namespace bf {
         None = 0,
         WindowClose, WindowResize,
         KeyPressed, KeyReleased,
-        MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+        MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled,
+        CustomEvent
     };
 
     enum EventCategory {

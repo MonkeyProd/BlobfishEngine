@@ -45,11 +45,6 @@ namespace bf {
         ImGui::ShowDemoWindow(&show);
     }
 
-    void ImGuiLayer::OnEvent(Event &event) {
-        ZoneScoped;
-        Layer::OnEvent(event);
-    }
-
     ImGuiLayer::ImGuiLayer() : Layer("ImGui Layer") {
     }
 

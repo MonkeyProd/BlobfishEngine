@@ -6,8 +6,13 @@
 #define COMPOUND_LAYER_H
 
 #include "BlobPCH.h"
-#include "../Event/Event.h"
+#include <Event/Event.h>
+#include <Event/WindowEvent.h>
+#include <Event/MouseEvent.h>
+#include <Event/KeyEvent.h>
 #include "Timestep.h"
+
+#define BLOB_BIND(cls, func) std::bind(& cls::func, this, std::placeholders::_1)
 
 namespace bf {
 
@@ -25,7 +30,27 @@ namespace bf {
 
         virtual void OnImGuiRender() {}
 
-        virtual void OnEvent(Event &event) {}
+        void OnEvent(Event &event) {
+            EventDispatcher dispatcher(event);
+            dispatcher.Dispatch<WindowCloseEvent>(BLOB_BIND(Layer, OnWindowCloseEvent));
+            dispatcher.Dispatch<WindowResizeEvent>(BLOB_BIND(Layer, OnWindowResizeEvent));
+            dispatcher.Dispatch<KeyPressedEvent>(BLOB_BIND(Layer, OnKeyPressedEvent));
+            dispatcher.Dispatch<KeyReleasedEvent>(BLOB_BIND(Layer, OnKeyReleasedEvent));
+            dispatcher.Dispatch<MouseButtonPressedEvent>(BLOB_BIND(Layer, OnMouseButtonPressedEvent));
+            dispatcher.Dispatch<MouseButtonReleasedEvent>(BLOB_BIND(Layer, OnMouseButtonReleasedEvent));
+            dispatcher.Dispatch<MouseMovedEvent>(BLOB_BIND(Layer, OnMouseMovedEvent));
+            dispatcher.Dispatch<MouseScrolledEvent>(BLOB_BIND(Layer, OnMouseScrolledEvent));
+            DispatchCustomEvents(dispatcher);
+        }
+        virtual void DispatchCustomEvents(EventDispatcher &dispatcher){};
+        virtual bool OnWindowCloseEvent(WindowCloseEvent& event){return false;}
+        virtual bool OnWindowResizeEvent(WindowResizeEvent& event){return false;}
+        virtual bool OnKeyPressedEvent(KeyPressedEvent& event){return false;}
+        virtual bool OnKeyReleasedEvent(KeyReleasedEvent& event){return false;}
+        virtual bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& event){return false;}
+        virtual bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& event){return false;}
+        virtual bool OnMouseMovedEvent(MouseMovedEvent& event){return false;}
+        virtual bool OnMouseScrolledEvent(MouseScrolledEvent& event){return false;}
 
         const std::string &GetName() const { return m_DebugName; }
 

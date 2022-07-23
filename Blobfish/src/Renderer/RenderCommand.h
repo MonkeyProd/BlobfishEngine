@@ -12,6 +12,9 @@ namespace bf {
 
     class RenderCommand {
     public:
+        static inline void Init(){
+            s_RendererAPI->Init();
+        }
         static inline void DrawIndexed(VertexArray *vertexArray){
             s_RendererAPI->DrawIndexed(vertexArray);
         }
@@ -20,6 +23,10 @@ namespace bf {
         }
         static inline void Clear(){
             s_RendererAPI->Clear();
+        }
+        static inline void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
+        {
+            s_RendererAPI->SetViewport(x, y, width, height);
         }
     private:
         static RendererAPI* s_RendererAPI;

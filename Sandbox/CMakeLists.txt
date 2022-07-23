@@ -7,7 +7,6 @@ add_compile_definitions(TRACY_ENABLE)
 
 set(SOURCE_FILES src/main_test.cpp)
 file(GLOB TRACY_PROFILER_FILES extern/tracy/TracyClient.cpp)
-
 add_executable(sandbox ${SOURCE_FILES} ${GLAD_FILES} ${TRACY_PROFILER_FILES})
 
 #GameEngine

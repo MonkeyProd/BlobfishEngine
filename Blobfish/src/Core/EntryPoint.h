@@ -17,6 +17,7 @@ int main() {
     BF_LOG_DEBUG("APPLICATION CREATED");
     app->run();
     BF_LOG_DEBUG("SUCCESSFUL EXIT");
+    delete app;
     return 0;
 }
 

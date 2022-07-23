@@ -21,4 +21,15 @@ namespace bf {
         ZoneScoped;
         glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     }
+
+    void RendererAPIOpenGL::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+        ZoneScoped;
+        glViewport(x, y, width, height);
+    }
+
+    void RendererAPIOpenGL::Init() {
+        ZoneScoped;
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
 } // bf

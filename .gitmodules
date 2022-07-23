@@ -13,3 +13,6 @@
 [submodule "Blobfish/extern/tracy"]
 	path = Blobfish/extern/tracy
 	url = https://github.com/wolfpld/tracy.git
+[submodule "Blobfish/extern/stb"]
+	path = Blobfish/extern/stb
+	url = https://github.com/nothings/stb.git

@@ -19,7 +19,7 @@
 #include <Renderer/RenderCommand.h>
 #include <Renderer/Renderer.h>
 
-#define BLOB_BIND(func) std::bind(&Application::func, this, std::placeholders::_1)
+#define BLOB_BIND(cls, func) std::bind(& cls::func, this, std::placeholders::_1)
 
 namespace bf {
     class Application {
@@ -30,6 +30,7 @@ namespace bf {
         ImGuiLayer *m_imGuiLayer;
         float m_LastFrameTime = 0.0f;
         static Application *s_instance;
+        bool m_minimized = false;
     public:
         Application();
 
@@ -37,7 +38,9 @@ namespace bf {
 
         void OnEvent(Event &e);
 
-        void OnUpdate();
+        static void EmitEvent(Event &e){
+            Application::getInstance()->OnEvent(e);
+        }
 
         void PushLayer(Layer *layer);
 

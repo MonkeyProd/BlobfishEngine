@@ -13,12 +13,11 @@ namespace bf {
         m_Data.Height = props.Height;
         m_Data.Width = props.Width;
         glfwInit();
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         m_window = glfwCreateWindow(m_props.Width, m_props.Height, m_props.Title.c_str(), NULL, NULL);
-
 
         m_context = RenderContext::Create(m_window);
         m_context->init();

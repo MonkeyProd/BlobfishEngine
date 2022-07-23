@@ -15,7 +15,7 @@ namespace bf {
 
         ~LayerStack(){
             ZoneScoped;
-            for (Layer *layer: m_Layers){
+            for (auto layer: m_Layers){
                 layer->OnDetach();
                 delete layer;
             }

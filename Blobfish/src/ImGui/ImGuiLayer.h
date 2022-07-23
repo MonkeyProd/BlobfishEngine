@@ -25,8 +25,6 @@ namespace bf {
 
         void OnImGuiRender() override;
 
-        void OnEvent(Event &event) override;
-
         void Begin();
 
         void End();

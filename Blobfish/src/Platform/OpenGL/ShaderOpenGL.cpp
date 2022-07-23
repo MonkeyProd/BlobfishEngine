@@ -141,4 +141,10 @@ namespace bf {
         auto location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
+
+    void ShaderOpenGL::setUniformInt(const std::string &name, const int &uniform) {
+        ZoneScoped;
+        auto location = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform1i(location, uniform);
+    }
 } // bf
