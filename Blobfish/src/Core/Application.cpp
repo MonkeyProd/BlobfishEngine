@@ -7,7 +7,7 @@ namespace bf {
     Application::Application() {
         BF_ASSERT(not s_instance, "APPLICATION ALREADY EXISTS");
         s_instance = this;
-        m_window = Window::Create({"TEST TITLE", 800, 600});
+        m_window = Window::Create();
         m_window->SetEventCallback(BLOB_BIND(Application, OnEvent));
         Renderer::Init();
         m_imGuiLayer = new ImGuiLayer();

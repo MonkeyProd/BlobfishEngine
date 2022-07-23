@@ -37,8 +37,8 @@ namespace bf {
 
     void ImGuiLayer::OnImGuiRender() {
         ZoneScoped;
-        static bool show = true;
-        ImGui::ShowDemoWindow(&show);
+//        static bool show = true;
+//        ImGui::ShowDemoWindow(&show);
     }
 
     ImGuiLayer::ImGuiLayer() : Layer("ImGui Layer") {
