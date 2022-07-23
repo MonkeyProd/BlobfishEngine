@@ -1,7 +1,3 @@
-//
-// Created by plasm on 19.07.2022.
-//
-
 #include "BufferOpenGl.h"
 
 namespace bf {

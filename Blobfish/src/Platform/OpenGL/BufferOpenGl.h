@@ -1,9 +1,5 @@
-//
-// Created by plasm on 19.07.2022.
-//
-
-#ifndef COMPOUND_BUFFEROPENGL_H
-#define COMPOUND_BUFFEROPENGL_H
+#ifndef BUFFEROPENGL_H
+#define BUFFEROPENGL_H
 
 #include <Renderer/Buffer.h>
 
@@ -43,4 +39,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_BUFFEROPENGL_H
+#endif //BUFFEROPENGL_H

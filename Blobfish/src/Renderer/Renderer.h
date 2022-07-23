@@ -1,9 +1,5 @@
-//
-// Created by plasm on 21.07.2022.
-//
-
-#ifndef COMPOUND_RENDERER_H
-#define COMPOUND_RENDERER_H
+#ifndef RENDERER_H
+#define RENDERER_H
 
 #include "RenderCommand.h"
 #include "Shader.h"
@@ -35,4 +31,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_RENDERER_H
+#endif //RENDERER_H

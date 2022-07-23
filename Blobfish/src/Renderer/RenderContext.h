@@ -1,9 +1,5 @@
-//
-// Created by plasm on 16.07.2022.
-//
-
-#ifndef COMPOUND_RENDERCONTEXT_H
-#define COMPOUND_RENDERCONTEXT_H
+#ifndef RENDERCONTEXT_H
+#define RENDERCONTEXT_H
 
 namespace bf {
     class RenderContext {
@@ -18,4 +14,4 @@ namespace bf {
     };
 }
 
-#endif //COMPOUND_RENDERCONTEXT_H
+#endif //RENDERCONTEXT_H

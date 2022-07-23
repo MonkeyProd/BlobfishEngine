@@ -1,7 +1,3 @@
-//
-// Created by xyamix on 12.07.2022.
-//
-
 #include "test.h"
 #include "../Core/BlobPCH.h"
 

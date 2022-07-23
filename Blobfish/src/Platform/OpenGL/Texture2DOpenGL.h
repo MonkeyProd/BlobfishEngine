@@ -1,9 +1,5 @@
-//
-// Created by plasm on 23.07.2022.
-//
-
-#ifndef COMPOUND_TEXTURE2DOPENGL_H
-#define COMPOUND_TEXTURE2DOPENGL_H
+#ifndef TEXTURE2DOPENGL_H
+#define TEXTURE2DOPENGL_H
 
 #include <Renderer/Texture.h>
 #include <glad/glad.h>
@@ -44,4 +40,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_TEXTURE2DOPENGL_H
+#endif //TEXTURE2DOPENGL_H

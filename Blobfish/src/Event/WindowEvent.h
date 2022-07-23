@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_WINDOWEVENT_H
-#define COMPOUND_WINDOWEVENT_H
+#ifndef WINDOWEVENT_H
+#define WINDOWEVENT_H
 
 #include "Event.h"
 #include "../Core/BlobPCH.h"
@@ -37,4 +33,4 @@ namespace bf {
     };
 
 }
-#endif //COMPOUND_WINDOWEVENT_H
+#endif //WINDOWEVENT_H

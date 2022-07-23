@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_LAYER_H
-#define COMPOUND_LAYER_H
+#ifndef LAYER_H
+#define LAYER_H
 
 #include "BlobPCH.h"
 #include <Event/Event.h>
@@ -60,4 +56,4 @@ namespace bf {
 
 } // Blobfish
 
-#endif //COMPOUND_LAYER_H
+#endif //LAYER_H

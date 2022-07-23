@@ -1,10 +1,6 @@
 
-//
-// Created by plasm on 21.07.2022.
-//
-
-#ifndef COMPOUND_RENDERCOMMAND_H
-#define COMPOUND_RENDERCOMMAND_H
+#ifndef RENDERCOMMAND_H
+#define RENDERCOMMAND_H
 
 #include "RendererAPI.h"
 
@@ -34,4 +30,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_RENDERCOMMAND_H
+#endif //RENDERCOMMAND_H

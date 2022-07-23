@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_WINDOW_H
-#define COMPOUND_WINDOW_H
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include "BlobPCH.h"
 #include "../Event/Event.h"
@@ -59,4 +55,4 @@ namespace bf {
 
 }
 
-#endif //COMPOUND_WINDOW_H
+#endif //WINDOW_H

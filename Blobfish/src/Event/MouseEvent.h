@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_MOUSEEVENT_H
-#define COMPOUND_MOUSEEVENT_H
+#ifndef MOUSEEVENT_H
+#define MOUSEEVENT_H
 
 #include "Event.h"
 #include "../Core/BlobPCH.h"
@@ -71,4 +67,4 @@ namespace bf {
 
 }
 
-#endif //COMPOUND_MOUSEEVENT_H
+#endif //MOUSEEVENT_H

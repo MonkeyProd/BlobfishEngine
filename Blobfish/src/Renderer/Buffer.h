@@ -1,9 +1,5 @@
-//
-// Created by plasm on 19.07.2022.
-//
-
-#ifndef COMPOUND_BUFFER_H
-#define COMPOUND_BUFFER_H
+#ifndef BUFFER_H
+#define BUFFER_H
 
 #include <Core/BlobPCH.h>
 
@@ -159,4 +155,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_BUFFER_H
+#endif //BUFFER_H

@@ -1,9 +1,5 @@
-//
-// Created by plasm on 16.07.2022.
-//
-
-#ifndef COMPOUND_SHADEROPENGL_H
-#define COMPOUND_SHADEROPENGL_H
+#ifndef SHADEROPENGL_H
+#define SHADEROPENGL_H
 
 #include <Renderer/Shader.h>
 #include <glad/glad.h>
@@ -34,4 +30,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_SHADEROPENGL_H
+#endif //SHADEROPENGL_H

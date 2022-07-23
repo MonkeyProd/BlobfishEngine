@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_TIMESTEP_H
-#define COMPOUND_TIMESTEP_H
+#ifndef TIMESTEP_H
+#define TIMESTEP_H
 
 namespace bf {
     class Timestep {
@@ -23,4 +19,4 @@ namespace bf {
     };
 }
 
-#endif //COMPOUND_TIMESTEP_H
+#endif //TIMESTEP_H

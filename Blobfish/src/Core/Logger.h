@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_LOGGER_H
-#define COMPOUND_LOGGER_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
@@ -24,4 +20,4 @@
 #define BF_LOG_CRITICAL(...)
 #endif
 
-#endif //COMPOUND_LOGGER_H
+#endif //LOGGER_H

@@ -1,9 +1,5 @@
-//
-// Created by plasm on 16.07.2022.
-//
-
-#ifndef COMPOUND_SHADER_H
-#define COMPOUND_SHADER_H
+#ifndef SHADER_H
+#define SHADER_H
 
 #include <Core/BlobPCH.h>
 #include <glm/glm.hpp>
@@ -38,4 +34,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_SHADER_H
+#endif //SHADER_H

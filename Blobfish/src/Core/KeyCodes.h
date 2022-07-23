@@ -1,9 +1,5 @@
-//
-// Created by plasm on 15.07.2022.
-//
-
-#ifndef COMPOUND_KEYCODES_H
-#define COMPOUND_KEYCODES_H
+#ifndef KEYCODES_H
+#define KEYCODES_H
 
 /* The unknown key */
 #define BF_KEY_UNKNOWN            -1
@@ -132,4 +128,4 @@
 #define BF_KEY_RIGHT_SUPER        347
 #define BF_KEY_MENU               348
 
-#endif //COMPOUND_KEYCODES_H
+#endif //KEYCODES_H

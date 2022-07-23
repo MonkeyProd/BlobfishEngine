@@ -1,9 +1,5 @@
-//
-// Created by plasm on 21.07.2022.
-//
-
-#ifndef COMPOUND_ORTHOGRAPHICCAMERA_H
-#define COMPOUND_ORTHOGRAPHICCAMERA_H
+#ifndef ORTHOGRAPHICCAMERA_H
+#define ORTHOGRAPHICCAMERA_H
 
 #include <glm/glm.hpp>
 #include <Core/BlobPCH.h>
@@ -52,4 +48,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_ORTHOGRAPHICCAMERA_H
+#endif //ORTHOGRAPHICCAMERA_H

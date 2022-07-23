@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_EVENT_H
-#define COMPOUND_EVENT_H
+#ifndef EVENT_H
+#define EVENT_H
 
 #include "../Core/BlobPCH.h"
 
@@ -81,4 +77,4 @@ namespace bf {
 
 } // Blobfish
 
-#endif //COMPOUND_EVENT_H
+#endif //EVENT_H

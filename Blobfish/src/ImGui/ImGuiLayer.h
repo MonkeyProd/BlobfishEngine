@@ -1,9 +1,5 @@
-//
-// Created by plasm on 15.07.2022.
-//
-
-#ifndef COMPOUND_IMGUILAYER_H
-#define COMPOUND_IMGUILAYER_H
+#ifndef IMGUILAYER_H
+#define IMGUILAYER_H
 
 #include "../Core/Layer.h"
 #include "../Platform/OpenGL/ImGuiOpenGL.h"
@@ -32,4 +28,4 @@ namespace bf {
 
 } // Blobfish
 
-#endif //COMPOUND_IMGUILAYER_H
+#endif //IMGUILAYER_H

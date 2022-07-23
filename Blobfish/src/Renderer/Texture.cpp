@@ -1,7 +1,3 @@
-//
-// Created by plasm on 23.07.2022.
-//
-
 #include "Texture.h"
 #include <Platform/OpenGL/Texture2DOpenGL.h>
 

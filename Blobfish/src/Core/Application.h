@@ -1,8 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-#ifndef COMPOUND_APPLICATION_H
-#define COMPOUND_APPLICATION_H
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
 #include "BlobPCH.h"
 #include "../Event/Event.h"
@@ -56,4 +53,4 @@ namespace bf {
     Application *create_application();
 } // Blobfish
 
-#endif //COMPOUND_APPLICATION_H
+#endif //APPLICATION_H

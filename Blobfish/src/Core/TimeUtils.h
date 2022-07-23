@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_TIMEUTILS_H
-#define COMPOUND_TIMEUTILS_H
+#ifndef TIMEUTILS_H
+#define TIMEUTILS_H
 
 namespace bf {
 
@@ -15,4 +11,4 @@ namespace bf {
 
 }
 
-#endif //COMPOUND_TIMEUTILS_H
+#endif //TIMEUTILS_H

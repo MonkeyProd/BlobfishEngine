@@ -1,9 +1,5 @@
-//
-// Created by plasm on 15.07.2022.
-//
-
-#ifndef COMPOUND_INPUTUTILS_H
-#define COMPOUND_INPUTUTILS_H
+#ifndef INPUTUTILS_H
+#define INPUTUTILS_H
 
 #include "BlobPCH.h"
 
@@ -22,4 +18,4 @@ namespace bf{
         };
 }
 
-#endif //COMPOUND_INPUTUTILS_H
+#endif //INPUTUTILS_H

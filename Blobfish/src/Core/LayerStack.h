@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_LAYERSTACK_H
-#define COMPOUND_LAYERSTACK_H
+#ifndef LAYERSTACK_H
+#define LAYERSTACK_H
 
 #include "Layer.h"
 
@@ -80,4 +76,4 @@ namespace bf {
 
 } // Blobfish
 
-#endif //COMPOUND_LAYERSTACK_H
+#endif //LAYERSTACK_H

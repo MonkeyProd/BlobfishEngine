@@ -1,9 +1,5 @@
-//
-// Created by plasm on 23.07.2022.
-//
-
-#ifndef COMPOUND_TEXTURE_H
-#define COMPOUND_TEXTURE_H
+#ifndef TEXTURE_H
+#define TEXTURE_H
 
 #include <Core/BlobPCH.h>
 
@@ -39,4 +35,4 @@ namespace bf{
 }
 
 
-#endif //COMPOUND_TEXTURE_H
+#endif //TEXTURE_H

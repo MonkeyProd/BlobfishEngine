@@ -1,7 +1,3 @@
-//
-// Created by xyamix on 12.07.2022.
-//
-
 #ifndef BLOBFISHENGINE_TEST_H
 #define BLOBFISHENGINE_TEST_H
 

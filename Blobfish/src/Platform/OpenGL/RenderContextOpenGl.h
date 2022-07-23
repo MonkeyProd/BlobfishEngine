@@ -1,9 +1,5 @@
-//
-// Created by plasm on 16.07.2022.
-//
-
-#ifndef COMPOUND_RENDERCONTEXTOPENGL_H
-#define COMPOUND_RENDERCONTEXTOPENGL_H
+#ifndef RENDERCONTEXTOPENGL_H
+#define RENDERCONTEXTOPENGL_H
 
 #include <Renderer/RenderContext.h>
 #include <glad/glad.h>
@@ -27,4 +23,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_RENDERCONTEXTOPENGL_H
+#endif //RENDERCONTEXTOPENGL_H

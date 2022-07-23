@@ -1,7 +1,3 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
 #include "WindowGLFW.h"
 #include <Tracy.hpp>
 

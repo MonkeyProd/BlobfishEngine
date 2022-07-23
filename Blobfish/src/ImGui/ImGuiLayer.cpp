@@ -1,7 +1,3 @@
-//
-// Created by plasm on 15.07.2022.
-//
-
 #include "ImGuiLayer.h"
 #include <GLFW/glfw3.h>
 #include <imgui.h>

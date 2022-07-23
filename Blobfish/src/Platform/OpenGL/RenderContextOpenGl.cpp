@@ -1,7 +1,3 @@
-//
-// Created by plasm on 16.07.2022.
-//
-
 #include "RenderContextOpenGl.h"
 #include <Core/BlobPCH.h>
 

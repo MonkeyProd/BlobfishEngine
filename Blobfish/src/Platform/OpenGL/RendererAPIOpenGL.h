@@ -1,9 +1,5 @@
-//
-// Created by plasm on 21.07.2022.
-//
-
-#ifndef COMPOUND_RENDERERAPIOPENGL_H
-#define COMPOUND_RENDERERAPIOPENGL_H
+#ifndef RENDERERAPIOPENGL_H
+#define RENDERERAPIOPENGL_H
 
 #include <Renderer/RendererAPI.h>
 
@@ -24,4 +20,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_RENDERERAPIOPENGL_H
+#endif //RENDERERAPIOPENGL_H

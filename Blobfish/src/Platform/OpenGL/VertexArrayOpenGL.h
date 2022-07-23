@@ -1,9 +1,5 @@
-//
-// Created by user on 19.07.2022.
-//
-
-#ifndef COMPOUND_VERTEXARRAYOPENGL_H
-#define COMPOUND_VERTEXARRAYOPENGL_H
+#ifndef VERTEXARRAYOPENGL_H
+#define VERTEXARRAYOPENGL_H
 
 #include <Renderer/VertexArray.h>
 #include <glad/glad.h>
@@ -38,4 +34,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_VERTEXARRAYOPENGL_H
+#endif //VERTEXARRAYOPENGL_H

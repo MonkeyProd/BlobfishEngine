@@ -1,9 +1,5 @@
-//
-// Created by plasm on 21.07.2022.
-//
-
-#ifndef COMPOUND_RENDERERAPI_H
-#define COMPOUND_RENDERERAPI_H
+#ifndef RENDERERAPI_H
+#define RENDERERAPI_H
 
 #include <glm/glm.hpp>
 #include <Renderer/VertexArray.h>
@@ -32,4 +28,4 @@ namespace bf {
     };
 }
 
-#endif //COMPOUND_RENDERERAPI_H
+#endif //RENDERERAPI_H

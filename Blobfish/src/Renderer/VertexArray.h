@@ -1,9 +1,5 @@
-//
-// Created by user on 19.07.2022.
-//
-
-#ifndef COMPOUND_VERTEXARRAY_H
-#define COMPOUND_VERTEXARRAY_H
+#ifndef VERTEXARRAY_H
+#define VERTEXARRAY_H
 
 #include "Buffer.h"
 #include <Core/BlobPCH.h>
@@ -31,4 +27,4 @@ namespace bf {
 
 } // bf
 
-#endif //COMPOUND_VERTEXARRAY_H
+#endif //VERTEXARRAY_H

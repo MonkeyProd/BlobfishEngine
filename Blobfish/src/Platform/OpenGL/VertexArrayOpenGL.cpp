@@ -1,7 +1,3 @@
-//
-// Created by user on 19.07.2022.
-//
-
 #include "VertexArrayOpenGL.h"
 
 namespace bf {

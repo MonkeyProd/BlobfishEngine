@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_KEYEVENT_H
-#define COMPOUND_KEYEVENT_H
+#ifndef KEYEVENT_H
+#define KEYEVENT_H
 
 #include "Event.h"
 #include "../Core/BlobPCH.h"
@@ -49,4 +45,4 @@ namespace bf {
     };
 }
 
-#endif //COMPOUND_KEYEVENT_H
+#endif //KEYEVENT_H

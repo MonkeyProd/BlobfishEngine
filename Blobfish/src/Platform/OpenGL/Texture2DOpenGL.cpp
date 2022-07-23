@@ -1,7 +1,3 @@
-//
-// Created by plasm on 23.07.2022.
-//
-
 #include "Texture2DOpenGL.h"
 #include <Tracy.hpp>
 #include <stb_image.h>

@@ -1,9 +1,5 @@
-//
-// Created by plasm on 21.07.2022.
-//
-
-#ifndef COMPOUND_CUSTOMEVENT_H
-#define COMPOUND_CUSTOMEVENT_H
+#ifndef CUSTOMEVENT_H
+#define CUSTOMEVENT_H
 
 #include <ostream>
 #include "Event.h"
@@ -42,4 +38,4 @@ namespace bf {
 //        int m_data;
 //    };
 }
-#endif //COMPOUND_CUSTOMEVENT_H
+#endif //CUSTOMEVENT_H

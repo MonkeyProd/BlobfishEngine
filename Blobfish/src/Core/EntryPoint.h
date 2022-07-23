@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_ENTRYPOINT_H
-#define COMPOUND_ENTRYPOINT_H
+#ifndef ENTRYPOINT_H
+#define ENTRYPOINT_H
 
 #include "BlobPCH.h"
 #include "Application.h"
@@ -21,4 +17,4 @@ int main() {
     return 0;
 }
 
-#endif //COMPOUND_ENTRYPOINT_H
+#endif //ENTRYPOINT_H

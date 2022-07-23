@@ -1,9 +1,5 @@
-//
-// Created by plasm on 14.07.2022.
-//
-
-#ifndef COMPOUND_WINDOWGLFW_H
-#define COMPOUND_WINDOWGLFW_H
+#ifndef WINDOWGLFW_H
+#define WINDOWGLFW_H
 
 #include "../../Core/Window.h"
 #include "glad/glad.h"
@@ -44,4 +40,4 @@ namespace bf {
 
 } // Blobfish
 
-#endif //COMPOUND_WINDOWGLFW_H
+#endif //WINDOWGLFW_H

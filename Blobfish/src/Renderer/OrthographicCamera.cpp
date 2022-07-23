@@ -1,7 +1,3 @@
-//
-// Created by plasm on 21.07.2022.
-//
-
 #include "OrthographicCamera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
