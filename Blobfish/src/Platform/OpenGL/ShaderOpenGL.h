@@ -22,6 +22,8 @@ namespace bf {
 
         void setUniformInt(const std::string &name, const int &uniform) override;
 
+        const std::string &GetName() const override;
+
         void Unbind() const override;
     private:
         GLuint m_RendererID;

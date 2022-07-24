@@ -18,10 +18,8 @@ void main()
 out vec4 FragColor;
 in vec3 rPos;
 in vec3 rColor;
-uniform float iTime;
-uniform vec3 iColors;
 
 void main()
 {
-    FragColor = vec4(rColor.x, rColor.y, rColor.z + iColors.z * cos(iTime * 2), 1.0f);
+    FragColor = vec4(rColor, 1.0f);
 };

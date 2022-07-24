@@ -31,11 +31,8 @@ private:
 };
 
 class MyLayer : public Layer {
-    float *colors;
 public:
     MyLayer() : Layer("My layer"), m_camera(-1.0f, 1.0f, -1.0f, 1.0f) {
-        colors = new float[3];
-        memset(colors, 0, sizeof(float) * 3);
         //vertex array
         m_vertexArray = VertexArray::Create();
 
@@ -60,8 +57,7 @@ public:
         m_vertexArray->AddVertexBuffer(m_vertexBuffer);
         m_vertexArray->SetIndexBuffer(m_indexBuffer);
 
-        m_shader = Shader::Create("test shader", "../../Sandbox/assets/shaders/triangleShader.glsl");
-
+        m_shaderLibrary.Load("shader 1", "../../Sandbox/assets/shaders/triangleShader.glsl");
 
         //BOX
         m_BoxvertexArray = VertexArray::Create();
@@ -88,7 +84,7 @@ public:
         m_BoxvertexArray->AddVertexBuffer(m_BoxvertexBuffer);
         m_BoxvertexArray->SetIndexBuffer(m_iBoxndexBuffer);
 
-        m_sBoxhader = Shader::Create("BOX shader", "../../Sandbox/assets/shaders/boxShader.glsl");
+        m_shaderLibrary.Load("shader 2", "../../Sandbox/assets/shaders/boxShader.glsl");
 
         m_texture = Texture2D::Create("../../Sandbox/assets/chessmate.jpg");
         m_texture2 = Texture2D::Create("../../Sandbox/assets/apples.png");
@@ -142,25 +138,19 @@ public:
             }
         }
 
-        m_shader->setUniform1f("iTime", ts);
-
         glm::mat4 triangle_transform = glm::translate(glm::mat4(1.0f), trianglePos);
         glm::mat4 box_transform = glm::translate(glm::mat4(1.0f), boxPos);
 
         Renderer::BeginScene(m_camera);
 
-        Renderer::Submit(m_BoxvertexArray, m_sBoxhader, box_transform, m_texture);
-        Renderer::Submit(m_BoxvertexArray, m_sBoxhader, triangle_transform, m_texture2);
-
-//        Renderer::Submit(m_vertexArray, m_shader, triangle_transform, m_texture2);
+        auto shader = m_shaderLibrary.Get("shader 2");
+        Renderer::Submit(m_BoxvertexArray, shader, box_transform, m_texture);
+        Renderer::Submit(m_BoxvertexArray, shader, triangle_transform, m_texture2);
 
         Renderer::EndScene();
-
-        m_shader->setUniform3f("iColors", colors);
     }
 
     void OnImGuiRender() override {
-        ImGui::ColorEdit3("Color edit", colors);
         ImGui::SliderFloat("speed camera", &m_cameraSpeed, 0.0f, 50.0f);
         ImGui::SliderFloat("rotation camera", &m_cameraRotationSpeed, 0.0f, 50.0f);
         ImGui::DragFloat3("triangle pos", glm::value_ptr(trianglePos), 0.1f);
@@ -189,15 +179,14 @@ public:
     }
 
 private:
+    ShaderLibrary m_shaderLibrary;
     VertexArray *m_vertexArray;
     VertexBuffer *m_vertexBuffer;
     IndexBuffer *m_indexBuffer;
-    Shader *m_shader;
 
     VertexArray *m_BoxvertexArray;
     VertexBuffer *m_BoxvertexBuffer;
     IndexBuffer *m_iBoxndexBuffer;
-    Shader *m_sBoxhader;
 
     Texture2D *m_texture;
     Texture2D *m_texture2;

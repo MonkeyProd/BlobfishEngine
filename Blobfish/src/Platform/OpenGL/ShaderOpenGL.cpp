@@ -143,4 +143,8 @@ namespace bf {
         auto location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniform1i(location, uniform);
     }
+
+    const std::string &ShaderOpenGL::GetName() const {
+        return m_name;
+    }
 } // bf
