@@ -8,8 +8,6 @@
 #include <Event/KeyEvent.h>
 #include "Timestep.h"
 
-#define BLOB_BIND(cls, func) std::bind(& cls::func, this, std::placeholders::_1)
-
 namespace bf {
 
     class Layer {
@@ -26,7 +24,7 @@ namespace bf {
 
         virtual void OnImGuiRender() {}
 
-        void OnEvent(Event &event) {
+        void OnEventBase(Event &event) {
             EventDispatcher dispatcher(event);
             dispatcher.Dispatch<WindowCloseEvent>(BLOB_BIND(Layer, OnWindowCloseEvent));
             dispatcher.Dispatch<WindowResizeEvent>(BLOB_BIND(Layer, OnWindowResizeEvent));
@@ -37,7 +35,9 @@ namespace bf {
             dispatcher.Dispatch<MouseMovedEvent>(BLOB_BIND(Layer, OnMouseMovedEvent));
             dispatcher.Dispatch<MouseScrolledEvent>(BLOB_BIND(Layer, OnMouseScrolledEvent));
             DispatchCustomEvents(dispatcher);
+            OnEvent(event);
         }
+        virtual void OnEvent(Event &event) {};
         virtual void DispatchCustomEvents(EventDispatcher &dispatcher){};
         virtual bool OnWindowCloseEvent(WindowCloseEvent& event){return false;}
         virtual bool OnWindowResizeEvent(WindowResizeEvent& event){return false;}

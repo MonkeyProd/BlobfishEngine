@@ -3,24 +3,25 @@
 
 #include "Event.h"
 #include "../Core/BlobPCH.h"
+#include <Core/KeyCodes.h>
 
 namespace bf {
     class KeyPressedEvent : public Event {
         int m_category = EventCategory::EInput | EventCategory::EKeyboard;
-        int m_keycode;
+        Key m_keycode;
         bool m_isRepeat;
     public:
-        KeyPressedEvent(int p_keycode, bool p_isRepeat) : m_keycode(p_keycode), m_isRepeat(p_isRepeat) {}
+        KeyPressedEvent(Key p_keycode, bool p_isRepeat) : m_keycode(p_keycode), m_isRepeat(p_isRepeat) {}
 
         DECLARE_EVENT_CLASS(EventType::KeyPressed)
 
         std::string ToString() const override {
             std::string result =
-                    "KeyPressedEvent: " + std::to_string(m_keycode) + " (repeat = " + std::to_string(m_isRepeat) + ")";
+                    "KeyPressedEvent: " + std::to_string((int)m_keycode) + " (repeat = " + std::to_string(m_isRepeat) + ")";
             return result;
         }
 
-        int getKeycode()const{
+        Key getKeycode()const{
             return m_keycode;
         }
 
@@ -32,14 +33,14 @@ namespace bf {
 
     class KeyReleasedEvent : public Event {
         int m_category = EventCategory::EInput | EventCategory::EKeyboard;
-        int m_keycode;
+        Key m_keycode;
     public:
-        KeyReleasedEvent(int p_keycode) : m_keycode(p_keycode) {}
+        KeyReleasedEvent(Key p_keycode) : m_keycode(p_keycode) {}
 
         DECLARE_EVENT_CLASS(EventType::KeyReleased)
 
         std::string ToString() const override {
-            std::string result = "KeyReleasedEvent: " + std::to_string(m_keycode) + ")";
+            std::string result = "KeyReleasedEvent: " + std::to_string((int)m_keycode) + ")";
             return result;
         }
     };

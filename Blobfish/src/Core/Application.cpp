@@ -59,7 +59,7 @@ namespace bf {
             if (e.m_handled) {
                 break;
             }
-            (*it)->OnEvent(e);
+            (*it)->OnEventBase(e);
         }
     }
 

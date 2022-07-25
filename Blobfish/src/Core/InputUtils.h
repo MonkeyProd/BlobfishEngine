@@ -2,11 +2,12 @@
 #define INPUTUTILS_H
 
 #include "BlobPCH.h"
+#include "KeyCodes.h"
 
 namespace bf{
         class Input{
             public:
-            static bool IsKeyPressed(int key);
+            static bool IsKeyPressed(Key key);
 
             static bool IsMouseButtonPressed(int button);
 

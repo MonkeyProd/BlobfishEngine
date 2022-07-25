@@ -6,10 +6,10 @@
 #include <GLFW/glfw3.h>
 #include <Tracy.hpp>
 
-bool bf::Input::IsKeyPressed(int key) {
+bool bf::Input::IsKeyPressed(Key key) {
     ZoneScoped;
     auto window = static_cast<GLFWwindow*>(bf::Application::getInstance()->getWindow().GetNativeWindow());
-    auto status = glfwGetKey(window, key);
+    auto status = glfwGetKey(window, (int)key);
     return status==GLFW_PRESS or status==GLFW_REPEAT;
 }
 

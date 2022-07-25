@@ -3,6 +3,7 @@
 #include <Renderer/Texture.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <Renderer/OrthographicCameraController.h>
 
 using namespace bf;
 
@@ -32,7 +33,7 @@ private:
 
 class MyLayer : public Layer {
 public:
-    MyLayer() : Layer("My layer"), m_camera(-1.0f, 1.0f, -1.0f, 1.0f) {
+    MyLayer() : Layer("My layer"), m_cameraController(1.0f, true) {
         //vertex array
         m_vertexArray = VertexArray::Create();
 
@@ -105,43 +106,12 @@ public:
         RenderCommand::SetClearColor({0.5, 0.5, 0.5, 1});
         RenderCommand::Clear();
 
-        {
-            if (Input::IsKeyPressed(BF_KEY_W)) {
-                auto pos = m_camera.GetPosition();
-                pos.y += m_cameraSpeed * ts;
-                m_camera.SetPosition(pos);
-            }
-            if (Input::IsKeyPressed(BF_KEY_A)) {
-                auto pos = m_camera.GetPosition();
-                pos.x += -m_cameraSpeed * ts;
-                m_camera.SetPosition(pos);
-            }
-            if (Input::IsKeyPressed(BF_KEY_S)) {
-                auto pos = m_camera.GetPosition();
-                pos.y -= m_cameraSpeed * ts;
-                m_camera.SetPosition(pos);
-            }
-            if (Input::IsKeyPressed(BF_KEY_D)) {
-                auto pos = m_camera.GetPosition();
-                pos.x += m_cameraSpeed * ts;
-                m_camera.SetPosition(pos);
-            }
-            if (Input::IsKeyPressed(BF_KEY_Q)) {
-                auto rot = m_camera.GetRotation();
-                rot -= m_cameraRotationSpeed * ts;
-                m_camera.SetRotation(rot);
-            }
-            if (Input::IsKeyPressed(BF_KEY_E)) {
-                auto rot = m_camera.GetRotation();
-                rot += m_cameraRotationSpeed * ts;
-                m_camera.SetRotation(rot);
-            }
-        }
+        m_cameraController.OnUpdate(ts);
 
         glm::mat4 triangle_transform = glm::translate(glm::mat4(1.0f), trianglePos);
         glm::mat4 box_transform = glm::translate(glm::mat4(1.0f), boxPos);
 
-        Renderer::BeginScene(m_camera);
+        Renderer::BeginScene(m_cameraController.GetCamera());
 
         auto shader = m_shaderLibrary.Get("shader 2");
         Renderer::Submit(m_BoxvertexArray, shader, box_transform, m_texture);
@@ -155,9 +125,13 @@ public:
         ImGui::SliderFloat("rotation camera", &m_cameraRotationSpeed, 0.0f, 50.0f);
         ImGui::DragFloat3("triangle pos", glm::value_ptr(trianglePos), 0.1f);
         ImGui::DragFloat3("box pos", glm::value_ptr(boxPos), 0.1f);
-        auto camera_pos = m_camera.GetPosition();
+        auto camera_pos = m_cameraController.GetCamera().GetPosition();
         ImGui::DragFloat3("camera pos", glm::value_ptr(camera_pos), 0.1f);
-        m_camera.SetPosition(camera_pos);
+        m_cameraController.GetCamera().SetPosition(camera_pos);
+    }
+
+    void OnEvent(Event &event) override {
+        m_cameraController.OnEvent(event);
     }
 
     void DispatchCustomEvents(EventDispatcher &dispatcher) override {
@@ -170,7 +144,7 @@ public:
     }
 
     bool OnKeyPressedEvent(KeyPressedEvent &event) override {
-        if (event.getKeycode() == BF_KEY_C) {
+        if (event.getKeycode() == bf::Key::C) {
             BF_LOG_DEBUG("THROWING EXAMPLE CUSTOM EVENT");
             ExampleCustomEvent e(125);
             Application::EmitEvent(e);
@@ -191,7 +165,7 @@ private:
     Texture2D *m_texture;
     Texture2D *m_texture2;
 
-    OrthographicCamera m_camera;
+    OrthographicCameraController m_cameraController;
     float m_cameraSpeed = 3.0f;
     float m_cameraRotationSpeed = 40.0f;
     glm::vec3 trianglePos;

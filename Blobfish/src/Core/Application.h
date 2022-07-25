@@ -16,8 +16,6 @@
 #include <Renderer/RenderCommand.h>
 #include <Renderer/Renderer.h>
 
-#define BLOB_BIND(cls, func) std::bind(& cls::func, this, std::placeholders::_1)
-
 namespace bf {
     class Application {
     protected:

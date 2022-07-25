@@ -44,17 +44,17 @@ namespace bf {
             WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
             switch (action) {
                 case GLFW_PRESS: {
-                    KeyPressedEvent event(key, false);
+                    KeyPressedEvent event(Key(key), false);
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_RELEASE: {
-                    KeyReleasedEvent event(key);
+                    KeyReleasedEvent event((Key(key)));
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_REPEAT: {
-                    KeyPressedEvent event(key, true);
+                    KeyPressedEvent event(Key(key), true);
                     data.EventCallback(event);
                     break;
                 }
