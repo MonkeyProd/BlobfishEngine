@@ -18,9 +18,17 @@ namespace bf {
 
         virtual void setUniform3f(std::string name, float *uniform) = 0;
 
+        virtual void setUniform4f(std::string name, float *uniform) = 0;
+
+        virtual void setUniform3f(std::string name, const glm::vec3 &uniform) = 0;
+
+        virtual void setUniform4f(std::string name, const glm::vec4 &uniform) = 0;
+
         virtual void setUniformMat4(const std::string &name, const glm::mat4 &matrix) = 0;
 
         virtual void setUniformInt(const std::string &name, const int &uniform) = 0;
+
+        virtual void setUniformIntArray(const std::string &name, const int *arr, int count) = 0;
 
         virtual const std::string &GetName() const = 0;
 
@@ -45,7 +53,7 @@ namespace bf {
     // TODO use smart pointers
     class ShaderLibrary {
     public:
-        void Add(const std::string &name, Shader* shader);
+        void Add(const std::string &name, Shader *shader);
 
         void Add(Shader *shader);
 

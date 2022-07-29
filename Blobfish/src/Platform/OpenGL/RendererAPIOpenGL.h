@@ -13,7 +13,7 @@ namespace bf {
 
         void SetClearColor(const glm::vec4 &color) override;
 
-        void DrawIndexed(VertexArray *vertexArray) override;
+        void DrawIndexed(VertexArray *vertexArray, uint32_t count = 0) override;
 
         void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) override;
     };

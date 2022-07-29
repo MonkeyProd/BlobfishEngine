@@ -13,9 +13,11 @@ namespace bf {
         glClearColor(color.r, color.g, color.b, color.a);
     }
 
-    void RendererAPIOpenGL::DrawIndexed(VertexArray *vertexArray) {
+    void RendererAPIOpenGL::DrawIndexed(VertexArray *vertexArray, uint32_t indexCount) {
         ZoneScoped;
-        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        uint32_t count = indexCount ? vertexArray->GetIndexBuffer()->GetCount() : indexCount;
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     void RendererAPIOpenGL::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) {

@@ -5,6 +5,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Renderer/OrthographicCameraController.h>
 
+#include "Sandbox2D_test.h"
+#include <ImGui/NodeEditorLayer.h>
+#include <Core/EntryPoint.h>
+
 using namespace bf;
 
 class ExampleCustomEvent : public CustomEvent {
@@ -175,7 +179,9 @@ private:
 class MyApp : public Application {
 public:
     MyApp() {
-        PushLayer(new MyLayer);
+//        PushLayer(new MyLayer);
+        PushLayer(new Sandbox2D);
+//        PushOverlay(new NodeEditorLayer);
     }
 };
 

@@ -18,9 +18,17 @@ namespace bf {
 
         void setUniform3f(std::string name, float *uniform) override;
 
+        void setUniform4f(std::string name, float *uniform) override;
+
+        void setUniform3f(std::string name, const glm::vec3 &uniform) override;
+
+        void setUniform4f(std::string name, const glm::vec4 &uniform) override;
+
         void setUniformMat4(const std::string& name, const glm::mat4 &matrix) override;
 
         void setUniformInt(const std::string &name, const int &uniform) override;
+
+        void setUniformIntArray(const std::string &name, const int *arr, int count) override;
 
         const std::string &GetName() const override;
 

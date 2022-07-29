@@ -8,6 +8,12 @@ namespace bf {
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
 
+    VertexBufferOpenGL::VertexBufferOpenGL(unsigned int size) {
+        glCreateBuffers(1, &m_id);
+        glBindBuffer(GL_ARRAY_BUFFER, m_id);
+        glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+    }
+
     void VertexBufferOpenGL::bind() const {
         ZoneScoped;
         glBindBuffer(GL_ARRAY_BUFFER, m_id);
@@ -27,6 +33,12 @@ namespace bf {
         ZoneScoped;
         m_layout = layout;
     }
+
+    void VertexBufferOpenGL::SetData(const void *data, uint32_t size) {
+        glBindBuffer(GL_ARRAY_BUFFER, m_id);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    }
+
 
     IndexBufferOpenGL::IndexBufferOpenGL(unsigned int *indices, unsigned int count) {
         ZoneScoped;

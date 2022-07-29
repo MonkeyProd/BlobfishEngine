@@ -25,14 +25,13 @@
 
 // RENDERER
 #include <Renderer/Renderer.h>
+#include <Renderer/Renderer2D.h>
 #include <Renderer/RendererAPI.h>
 #include <Renderer/RenderCommand.h>
 #include <Renderer/RenderContext.h>
 #include <Renderer/OrthographicCamera.h>
+#include <Renderer/OrthographicCameraController.h>
 #include <Renderer/Shader.h>
 #include <Renderer/Texture.h>
 #include <Renderer/Buffer.h>               // TODO: do we need this????
 #include <Renderer/VertexArray.h>          // TODO: and this
-
-// ENTRY POINT
-#include <Core/EntryPoint.h>

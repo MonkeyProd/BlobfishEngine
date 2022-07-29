@@ -10,6 +10,7 @@ namespace bf {
         m_window = Window::Create();
         m_window->SetEventCallback(BLOB_BIND(Application, OnEvent));
         Renderer::Init();
+        Renderer2D::Init();
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
     }

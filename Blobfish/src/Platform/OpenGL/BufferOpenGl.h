@@ -10,7 +10,12 @@ namespace bf {
     class VertexBufferOpenGL : public VertexBuffer {
     public:
         VertexBufferOpenGL(float *vertices, unsigned int size);
+
+        VertexBufferOpenGL(unsigned int size);
+
         ~VertexBufferOpenGL() override = default;
+
+        void SetData(const void *data, uint32_t size) override;
 
         void bind() const override;
 
@@ -28,11 +33,13 @@ namespace bf {
     class IndexBufferOpenGL : public IndexBuffer {
     public:
         IndexBufferOpenGL(unsigned int *indices, unsigned int count);
+
         ~IndexBufferOpenGL() override = default;
 
         void bind() const override;
 
         void unbind() const override;
+
     private:
         unsigned int m_id;
     };

@@ -15,6 +15,7 @@
 #include <Renderer/VertexArray.h>
 #include <Renderer/RenderCommand.h>
 #include <Renderer/Renderer.h>
+#include <Renderer/Renderer2D.h>
 
 namespace bf {
     class Application {

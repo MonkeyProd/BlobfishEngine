@@ -16,3 +16,6 @@
 [submodule "Blobfish/extern/stb"]
 	path = Blobfish/extern/stb
 	url = https://github.com/nothings/stb.git
+[submodule "Blobfish/extern/imgui-node-editor"]
+	path = Blobfish/extern/imgui-node-editor
+	url = https://github.com/thedmd/imgui-node-editor.git

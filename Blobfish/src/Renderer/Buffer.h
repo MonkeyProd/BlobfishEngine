@@ -133,6 +133,10 @@ namespace bf {
 
         static VertexBuffer *Create(float *vertices, unsigned int size);
 
+        static VertexBuffer *Create(unsigned int size);
+
+        virtual void SetData(const void *data, uint32_t size) = 0;
+
         virtual const BufferLayout &GetLayout() const = 0;
 
         virtual void SetLayout(const BufferLayout &layout) = 0;

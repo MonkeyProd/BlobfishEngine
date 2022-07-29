@@ -8,24 +8,28 @@ namespace bf {
 
     class RenderCommand {
     public:
-        static inline void Init(){
+        static inline void Init() {
             s_RendererAPI->Init();
         }
-        static inline void DrawIndexed(VertexArray *vertexArray){
-            s_RendererAPI->DrawIndexed(vertexArray);
+
+        static inline void DrawIndexed(VertexArray *vertexArray, uint32_t count = 0) {
+            s_RendererAPI->DrawIndexed(vertexArray, count);
         }
-        static inline void SetClearColor(const glm::vec4 &color){
+
+        static inline void SetClearColor(const glm::vec4 &color) {
             s_RendererAPI->SetClearColor(color);
         }
-        static inline void Clear(){
+
+        static inline void Clear() {
             s_RendererAPI->Clear();
         }
-        static inline void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
-        {
+
+        static inline void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
             s_RendererAPI->SetViewport(x, y, width, height);
         }
+
     private:
-        static RendererAPI* s_RendererAPI;
+        static RendererAPI *s_RendererAPI;
     };
 
 } // bf

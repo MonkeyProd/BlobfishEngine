@@ -17,7 +17,7 @@ namespace bf {
 
         virtual void SetClearColor(const glm::vec4 &color) = 0;
 
-        virtual void DrawIndexed(VertexArray *vertexArray) = 0;
+        virtual void DrawIndexed(VertexArray *vertexArray, uint32_t count = 0) = 0;
 
         virtual void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) = 0;
 

@@ -132,7 +132,7 @@ namespace bf {
         glDetachShader(m_RendererID, fragmentShader);
     }
 
-    void ShaderOpenGL::setUniformMat4(const std::string& name, const glm::mat4 &matrix) {
+    void ShaderOpenGL::setUniformMat4(const std::string &name, const glm::mat4 &matrix) {
         ZoneScoped;
         auto location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
@@ -146,5 +146,29 @@ namespace bf {
 
     const std::string &ShaderOpenGL::GetName() const {
         return m_name;
+    }
+
+    void ShaderOpenGL::setUniform4f(std::string name, float *uniform) {
+        ZoneScoped;
+        GLint uniform_loc = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform4f(uniform_loc, uniform[0], uniform[1], uniform[2], uniform[3]);
+    }
+
+    void ShaderOpenGL::setUniform3f(std::string name, const glm::vec3 &uniform) {
+        ZoneScoped;
+        GLint uniform_loc = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform3f(uniform_loc, uniform.x, uniform.y, uniform.z);
+    }
+
+    void ShaderOpenGL::setUniform4f(std::string name, const glm::vec4 &uniform) {
+        ZoneScoped;
+        GLint uniform_loc = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform4f(uniform_loc, uniform.x, uniform.y, uniform.z, uniform.w);
+    }
+
+    void ShaderOpenGL::setUniformIntArray(const std::string &name, const int *arr, int count) {
+        ZoneScoped;
+        GLint uniform_loc = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform1iv(uniform_loc, count, arr);
     }
 } // bf
