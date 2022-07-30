@@ -16,6 +16,8 @@ namespace bf {
         static const uint32_t MaxVertices = MaxQuads * 4;
         static const uint32_t MaxIndices = MaxQuads * 6;
         static const uint32_t MaxTextureSlots = 32; // TODO: RenderCaps
+                                                    // maybe GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS - GL_TEXTURE0 - 1
+                                                    // https://docs.gl/gl4/glActiveTexture
 
         VertexArray *QuadVertexArray;
         VertexBuffer *QuadVertexBuffer;
@@ -116,6 +118,9 @@ namespace bf {
     }
 
     void Renderer2D::Flush() {
+        if (s_Data.QuadIndexCount == 0)
+            return; // Nothing to draw
+
         // Bind textures
         for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
             s_Data.TextureSlots[i]->Bind(i);

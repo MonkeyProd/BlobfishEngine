@@ -9,7 +9,8 @@ namespace bf {
     }
 
     VertexBufferOpenGL::VertexBufferOpenGL(unsigned int size) {
-        glCreateBuffers(1, &m_id);
+        ZoneScoped;
+        glGenBuffers(1, &m_id);
         glBindBuffer(GL_ARRAY_BUFFER, m_id);
         glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
     }
