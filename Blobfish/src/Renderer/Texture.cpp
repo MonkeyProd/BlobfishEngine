@@ -2,7 +2,7 @@
 #include <Platform/OpenGL/Texture2DOpenGL.h>
 #include <Renderer/Renderer.h>
 
-namespace bf{
+namespace bf {
 
     Texture2D *Texture2D::Create(unsigned int width, unsigned int height) {
         //TODO: use smart pointers

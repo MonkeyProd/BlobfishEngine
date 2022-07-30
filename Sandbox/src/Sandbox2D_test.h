@@ -4,13 +4,17 @@
 #include <blobfish.h>
 #include <glm/gtc/type_ptr.hpp>
 
-class Sandbox2D: public bf::Layer {
+class Sandbox2D : public bf::Layer {
 private:
     bf::OrthographicCameraController m_cameraController;
-    bf::Texture2D* m_apples;
+    bf::Texture2D *m_apples;
     glm::vec3 m_apple_pos;
+
+    bf::Texture2D *m_RPGTileset;
+    bf::SubTexture2D *m_LightSprites[6];
 public:
     Sandbox2D();
+
     ~Sandbox2D() override = default;
 
     void OnAttach() override;

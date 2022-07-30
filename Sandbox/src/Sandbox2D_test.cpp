@@ -4,7 +4,12 @@ using namespace bf;
 
 void Sandbox2D::OnAttach() {
     m_apples = Texture2D::Create("../../Sandbox/assets/apples.png");
-    m_apple_pos = {0.0f, 0.0f, 0.0f};
+    m_apple_pos = {0.0f, 0.3f, 0.0f};
+
+    m_RPGTileset = Texture2D::Create("../../Sandbox/assets/RPG_Urban_Pack.png");
+    for (int i = 0; i < 6; ++i) {
+        m_LightSprites[i] = SubTexture2D::CreateFromCoordinates(m_RPGTileset, {2 + i, 10}, {16, 16}, {1, 2});
+    }
 }
 
 void Sandbox2D::OnDetach() {
@@ -31,6 +36,9 @@ void Sandbox2D::OnUpdate(Timestep ts) {
         }
     }
     Renderer2D::DrawQuad(m_apple_pos, {1.0f, 0.5f}, m_apples);
+    for (int i = 0; i < 6; ++i) {
+        Renderer2D::DrawQuad({-1.0f + i, -1.0f}, {0.5f, 1.0f}, m_LightSprites[i]);
+    }
 
     Renderer2D::EndScene();
 }
@@ -45,7 +53,7 @@ void Sandbox2D::OnImGuiRender() {
     ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
     ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
     ImGui::NewLine();
-    ImGui::ShowMetricsWindow();
+//    ImGui::ShowMetricsWindow();
 }
 
 void Sandbox2D::OnEvent(Event &event) {
