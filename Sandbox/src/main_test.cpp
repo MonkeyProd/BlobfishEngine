@@ -6,7 +6,6 @@
 #include <Renderer/OrthographicCameraController.h>
 
 #include "Sandbox2D_test.h"
-#include <ImGui/NodeEditorLayer.h>
 #include <Core/EntryPoint.h>
 
 using namespace bf;
@@ -181,7 +180,6 @@ public:
     MyApp() {
 //        PushLayer(new MyLayer);
         PushLayer(new Sandbox2D);
-//        PushOverlay(new NodeEditorLayer);
     }
 };
 
