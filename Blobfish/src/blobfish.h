@@ -23,6 +23,11 @@
 #include <Core/Timestep.h>
 #include <Core/TimeUtils.h>
 
+// SCENE
+#include <Scene/Scene.h>
+#include <Scene/Entity.h>
+#include <Scene/Components.h>
+
 // RENDERER
 #include <Renderer/Renderer.h>
 #include <Renderer/Renderer2D.h>
@@ -36,3 +41,4 @@
 #include <Renderer/SubTexture2D.h>
 #include <Renderer/Buffer.h>               // TODO: do we need this????
 #include <Renderer/VertexArray.h>          // TODO: and this
+#include <Renderer/Framebuffer.h>

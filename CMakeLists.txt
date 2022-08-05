@@ -3,3 +3,4 @@ project(Compound)
 
 add_subdirectory(Blobfish)
 add_subdirectory(Sandbox)
+add_subdirectory(Editor)
