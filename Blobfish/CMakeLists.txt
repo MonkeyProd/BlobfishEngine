@@ -6,17 +6,31 @@ add_compile_definitions(STB_IMAGE_IMPLEMENTATION)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(GLAD_FILES extern/glad/src/glad.c src/Renderer/RenderContext.h src/Platform/OpenGL/RenderContextOpenGl.cpp src/Platform/OpenGL/RenderContextOpenGl.h src/Renderer/RenderContext.cpp src/Renderer/Shader.cpp src/Renderer/Shader.h src/Platform/OpenGL/ShaderOpenGL.cpp src/Platform/OpenGL/ShaderOpenGL.h src/Renderer/Buffer.cpp src/Renderer/Buffer.h src/Platform/OpenGL/BufferOpenGl.cpp src/Platform/OpenGL/BufferOpenGl.h src/Renderer/VertexArray.cpp src/Renderer/VertexArray.h src/Platform/OpenGL/VertexArrayOpenGL.cpp src/Platform/OpenGL/VertexArrayOpenGL.h src/Renderer/RendererAPI.h src/Renderer/RendererAPI.cpp src/Renderer/Renderer.cpp src/Renderer/Renderer.h src/Renderer/RenderCommand.cpp src/Renderer/RenderCommand.h src/Platform/OpenGL/RendererAPIOpenGL.cpp src/Platform/OpenGL/RendererAPIOpenGL.h src/Renderer/OrthographicCamera.cpp src/Renderer/OrthographicCamera.h src/Event/CustomEvent.h src/Renderer/Texture.h src/Renderer/Texture.cpp src/Platform/OpenGL/Texture2DOpenGL.cpp src/Platform/OpenGL/Texture2DOpenGL.h src/Renderer/OrthographicCameraController.cpp src/Renderer/OrthographicCameraController.h src/Renderer/Renderer2D.cpp src/Renderer/Renderer2D.h src/Renderer/SubTexture2D.cpp src/Renderer/SubTexture2D.h src/Renderer/Framebuffer.cpp src/Renderer/Framebuffer.h src/Platform/OpenGL/FramebufferOpenGL.cpp src/Platform/OpenGL/FramebufferOpenGL.h ../Editor/src/Editor.cpp ../Editor/src/Editor.h src/Scene/Scene.cpp src/Scene/Scene.h src/Scene/Entity.cpp src/Scene/Entity.h src/Scene/Components.h)
-
-file(GLOB IMGUI_LIB_FILES extern/imgui/**.cpp)
-file(GLOB CORE_FILES src/Core/**.cpp core/**.h)
+# Source files
+# Engine
+file(GLOB CORE_FILES src/Core/**.cpp src/Core/**.h)
 file(GLOB EVENT_FILES src/Event/**.cpp src/Event/**.h)
 file(GLOB IMGUI_FILES src/ImGui/**.cpp src/ImGui/**.h)
 file(GLOB PLATFORM_FILES src/Platform/**/**.cpp src/Platform/**/**.h)
+file(GLOB RENDERER_FILES src/Renderer/**.cpp src/Renderer/**.h)
+file(GLOB SCENE_FILES src/Scene/**.cpp src/Scene/**.h)
+
+file(GLOB ENGINE_SOURCE_FILES ${CORE_FILES} ${EVENT_FILES} ${IMGUI_FILES} ${PLATFORM_FILES} ${RENDERER_FILES} ${SCENE_FILES})
+
+# External
+file(GLOB GLAD_FILES extern/glad/src/glad.c)
+file(GLOB IMGUI_LIB_FILES extern/imgui/**.cpp)
 file(GLOB TRACY_PROFILER_FILES extern/tracy/TracyClient.cpp)
 file(GLOB ENTT_FILES extern/entt/entt.hpp)
-#file(GLOB STB_FILES extern/stb/*.h)
 
+file(GLOB EXTERNAL_SOURCE_FILES ${GLAD_FILES} ${IMGUI_LIB_FILES} ${TRACY_PROFILER_FILES} ${ENTT_FILES})
+
+# All
+file(GLOB SOURCE_FILES ${ENGINE_SOURCE_FILES} ${EXTERNAL_SOURCE_FILES})
+
+add_library(blobfish ${SOURCE_FILES})
+
+# Includes
 include_directories(extern/glad/include)
 include_directories(extern/glfw/include)
 include_directories(extern/spdlog/include)
@@ -25,9 +39,9 @@ include_directories(extern/stb)
 include_directories(extern/entt)
 include_directories(src)
 
-add_library(blobfish ${GLAD_FILES} ${IMGUI_LIB_FILES} ${CORE_FILES} ${EVENT_FILES} ${IMGUI_FILES} ${PLATFORM_FILES} ${TRACY_PROFILER_FILES} ${ENTT_FILES})
 target_include_directories(blobfish PUBLIC extern/imgui extern/tracy extern/entt)
 
+# Subdirectories
 add_subdirectory(extern/glfw)
 add_subdirectory(extern/spdlog)
 add_subdirectory(extern/glm)

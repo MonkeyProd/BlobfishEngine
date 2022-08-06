@@ -16,7 +16,11 @@ namespace bf {
 
         Entity CreateEntity(const std::string &name = std::string());
 
+        void DestroyEntity( Entity e);
+
         void OnUpdate(Timestep ts);
+
+        const entt::registry &GetRegistry() const { return m_Registry; }
 
     private:
         entt::registry m_Registry;

@@ -32,21 +32,33 @@ namespace bf {
 
         glm::mat4 GetTransform() const {
             auto t = glm::translate(glm::mat4(1.0f), Position) *
-                     glm::rotate(glm::mat4(1.0f), glm::radians(Rotation), {0.0f, 0.0f, 1.0f})
+                     glm::rotate(glm::mat4(1.0f), Rotation, {0.0f, 0.0f, 1.0f})
                      * glm::scale(glm::mat4(1.0f), {Scale.x, Scale.y, 1.0f});
             return t;
         }
     };
 
     struct SpriteRendererComponent {
-        glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
-        Texture2D* Texture; // TODO: smart pointers
+        glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
+        Texture2D *Texture; // TODO: smart pointers
         float TilingFactor = 1.0f;
 
         SpriteRendererComponent() = default;
-        SpriteRendererComponent(const SpriteRendererComponent&) = default;
-        SpriteRendererComponent(const glm::vec4& color)
+
+        SpriteRendererComponent(const SpriteRendererComponent &) = default;
+
+        SpriteRendererComponent(const glm::vec4 &color)
                 : Color(color) {}
+    };
+
+    struct TestComponent {
+        glm::vec2 some_data;
+
+        TestComponent() = default;
+
+        TestComponent(const TestComponent &) = default;
+
+        TestComponent(const glm::vec2 &someData) : some_data(someData) {}
     };
 }
 

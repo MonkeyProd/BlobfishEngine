@@ -29,4 +29,8 @@ namespace bf {
                 Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
         }
     }
+
+    void Scene::DestroyEntity( Entity e) {
+        m_Registry.destroy(e);
+    }
 } // bf

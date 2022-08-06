@@ -10,12 +10,12 @@ private:
     bf::Framebuffer *m_Framebuffer;
     bf::OrthographicCameraController m_cameraController;
     bf::Texture2D *m_apples;
-    glm::vec3 m_apple_pos;
     glm::vec2 m_ViewportSize = {0, 0};
 
     Entity m_test_entity;
     Entity m_apples_entity;
     Scene m_scene;
+    Entity m_SelectedEntity;
 public:
     EditorLayer();
 
@@ -26,6 +26,15 @@ public:
     void OnUpdate(Timestep ts) override;
 
     void OnImGuiRender() override;
+private:
+    template<class T, class F>
+    bool DisplayComponent(F UIfunction, const char* title);
+
+    void DisplayDrawStatsWindow() const;
+
+    void DisplayEntityEditorWindow();
+
+    void DisplayViewport();
 };
 
 
