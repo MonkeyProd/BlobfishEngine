@@ -349,7 +349,7 @@ namespace bf {
         ZoneScopedN("Renderer2D");
         if (s_Data.QuadIndexCount >= Renderer2DStorage::MaxIndices)
             FlushAndReset();
-        constexpr glm::vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
+        glm::vec4 color = tintColor;
 
         float textureIndex = 0.0f;
         for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
@@ -405,7 +405,7 @@ namespace bf {
 
         if (s_Data.QuadIndexCount >= Renderer2DStorage::MaxIndices)
             FlushAndReset();
-        constexpr glm::vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
+        glm::vec4 color = tintColor;
 
         float textureIndex = 0.0f;
         for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
@@ -467,7 +467,7 @@ namespace bf {
         const float tilingFactor = 1.0f;
 
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-                              * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), {0.0f, 0.0f, 1.0f})
+                              * glm::rotate(glm::mat4(1.0f), rotation, {0.0f, 0.0f, 1.0f})
                               * glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
 
         s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
@@ -512,7 +512,7 @@ namespace bf {
         ZoneScopedN("Renderer2D");
         if (s_Data.QuadIndexCount >= Renderer2DStorage::MaxIndices)
             FlushAndReset();
-        constexpr glm::vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
+        glm::vec4 color = tintColor;
         float textureIndex = 0.0f;
         for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
             if (*s_Data.TextureSlots[i] == *texture) {
@@ -528,7 +528,7 @@ namespace bf {
         }
 
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-                              * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), {0.0f, 0.0f, 1.0f})
+                              * glm::rotate(glm::mat4(1.0f), rotation, {0.0f, 0.0f, 1.0f})
                               * glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
 
         s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
@@ -595,7 +595,7 @@ namespace bf {
 
         if (s_Data.QuadIndexCount >= Renderer2DStorage::MaxIndices)
             FlushAndReset();
-        constexpr glm::vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
+        glm::vec4 color = tintColor;
         float textureIndex = 0.0f;
         for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
             if (*s_Data.TextureSlots[i] == *texture->GetTexture()) {
@@ -611,7 +611,7 @@ namespace bf {
         }
 
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-                              * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), {0.0f, 0.0f, 1.0f})
+                              * glm::rotate(glm::mat4(1.0f), rotation, {0.0f, 0.0f, 1.0f})
                               * glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
 
         s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
