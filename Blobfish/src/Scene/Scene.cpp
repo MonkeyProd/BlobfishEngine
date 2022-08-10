@@ -28,19 +28,24 @@ namespace bf {
                 auto [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
                 if (camera.Primary) {
                     mainCamera = &camera.Camera;
+                    transform.Position.x += 2.0f * ts; //todo remove this line. just for testing purposes
                     cameraTransform = transform.GetTransform();
                     break;
                 }
             }
         }
-
         if (mainCamera) {
-            RenderScene(*mainCamera, cameraTransform);
+            RenderScene(mainCamera, cameraTransform);
         }
     }
 
-    void Scene::RenderScene(const Camera &camera, const glm::mat4 &cameraTransform) {
-        Renderer2D::BeginScene(camera.GetProjection(), cameraTransform);
+    void Scene::OnUpdateEditor(Timestep ts, EditorCamera *camera) {
+        // Render
+        RenderScene(camera, camera->Transform.GetTransform());
+    }
+
+    void Scene::RenderScene(const Camera *camera, const glm::mat4 &cameraTransform) {
+        Renderer2D::BeginScene(camera, cameraTransform);
         auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
         for (auto entity: group) {
             auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
@@ -52,16 +57,14 @@ namespace bf {
         Renderer2D::EndScene();
     }
 
-    void Scene::OnViewportResize(uint32_t width, uint32_t height)
-    {
+    void Scene::OnViewportResize(uint32_t width, uint32_t height) {
         m_ViewportWidth = width;
         m_ViewportHeight = height;
 
         // Resize our non-FixedAspectRatio cameras
         auto view = m_Registry.view<CameraComponent>();
-        for (auto entity : view)
-        {
-            auto& cameraComponent = view.get<CameraComponent>(entity);
+        for (auto entity: view) {
+            auto &cameraComponent = view.get<CameraComponent>(entity);
             if (!cameraComponent.FixedAspectRatio)
                 cameraComponent.Camera.SetViewportSize(width, height);
         }

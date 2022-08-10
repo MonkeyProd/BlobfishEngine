@@ -3,6 +3,7 @@
 
 #include <blobfish.h>
 #include "EntityEditor.h"
+#include "Scene/EditorCamera.h"
 
 using namespace bf;
 
@@ -11,6 +12,8 @@ private:
     bf::Framebuffer *m_Framebuffer;
     bf::Texture2D *m_apples;
     EntityEditor m_entityEditor;
+    EditorCamera *m_camera;
+    bool running = false;
 
 protected:
     glm::vec2 m_ViewportSize = {0, 0};

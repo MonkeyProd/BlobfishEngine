@@ -4,12 +4,12 @@
 
 void EditorLayer::OnAttach() {
     m_apples = Texture2D::Create("../../Sandbox/assets/apples.png");
-    m_Framebuffer = Framebuffer::Create({800, 600});
+    m_Framebuffer = Framebuffer::Create({1280, 720});
+    m_camera = new EditorCamera;
 
     ImGuiIO &io = ImGui::GetIO();
     float FontSize = 13;
     io.Fonts->AddFontFromFileTTF("../../Editor/Assets/Fonts/Ubuntu-Regular.ttf", FontSize);
-
     auto apples = m_scene.CreateEntity("apples");
     apples.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     apples.GetComponent<SpriteRendererComponent>().Texture = m_apples;
@@ -73,24 +73,31 @@ void EditorLayer::OnAttach() {
 }
 
 void EditorLayer::OnDetach() {
+    BF_LOG_INFO("Detaching");
+    delete m_camera;
 }
 
 void EditorLayer::OnUpdate(Timestep ts) {
-    if (m_Framebuffer->GetSpecification().Height != m_ViewportSize.y and
+    if (m_Framebuffer->GetSpecification().Height != m_ViewportSize.y or
         m_Framebuffer->GetSpecification().Width != m_ViewportSize.x) {
         m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
 //        m_cameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+        m_camera->SetViewportSize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
         m_scene.OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
     }
 
-//    m_cameraController.OnUpdate(ts);
+    m_camera->OnUpdate(ts, m_ViewportSize);
     m_Framebuffer->Bind();
 
     RenderCommand::SetClearColor({0.31, 0.34, 0.34, 1});
     RenderCommand::Clear();
 
     Renderer2D::ResetStats();
-    m_scene.OnUpdate(ts);
+    if (running) {
+        m_scene.OnUpdate(ts);
+    } else {
+        m_scene.OnUpdateEditor(ts, m_camera);
+    }
 
     m_Framebuffer->Unbind();
 }
@@ -166,6 +173,15 @@ void EditorLayer::OnImGuiRender() {
 void EditorLayer::DisplayViewport() {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     if (ImGui::Begin("Viewport")) {
+        ImGui::SliderFloat("Font scale", &ImGui::GetIO().FontGlobalScale, 1.0f, 3.0f);
+        ImGui::Checkbox("Running", &running);
+        if (running) {
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), "RUNNING");
+        }
+        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "LeftAlt+RMB then drag mouse to move editor camera around");
+        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f),
+                           "LeftAlt+LMB then drag mouse vertically to zoom editor camera");
 
         ImVec2 size{ImGui::GetContentRegionAvail()};
         glm::vec2 size_ = {size.x, size.y};
@@ -196,7 +212,7 @@ void EditorLayer::DisplayDrawStatsWindow() const {
     ImGui::End();
 }
 
-EditorLayer::EditorLayer(){
+EditorLayer::EditorLayer() {
 
 }
 

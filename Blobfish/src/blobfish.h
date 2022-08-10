@@ -36,6 +36,7 @@
 #include <Renderer/RenderContext.h>
 #include <Renderer/Shader.h>
 #include <Renderer/Texture.h>
+#include <Renderer/Camera.h>
 #include <Renderer/SubTexture2D.h>
 #include <Renderer/Buffer.h>               // TODO: do we need this????
 #include <Renderer/VertexArray.h>          // TODO: and this
