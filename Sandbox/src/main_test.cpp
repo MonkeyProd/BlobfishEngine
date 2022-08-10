@@ -3,7 +3,6 @@
 #include <Renderer/Texture.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <Renderer/OrthographicCameraController.h>
 
 #include "Sandbox2D_test.h"
 #include <Core/EntryPoint.h>
@@ -168,7 +167,6 @@ private:
     Texture2D *m_texture;
     Texture2D *m_texture2;
 
-    OrthographicCameraController m_cameraController;
     float m_cameraSpeed = 3.0f;
     float m_cameraRotationSpeed = 40.0f;
     glm::vec3 trianglePos;

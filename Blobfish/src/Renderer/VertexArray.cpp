@@ -4,6 +4,6 @@
 namespace bf {
     VertexArray *VertexArray::Create() {
         ZoneScoped;
-        return new VertexArrayOpenGL;
+        return new VertexArrayOpenGL; //TODO CHOOSE API
     }
 } // bf

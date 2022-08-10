@@ -1,6 +1,6 @@
 #include "EditorLayer.h"
+#include "EntityEditor.h"
 #include <glm/gtc/type_ptr.hpp>
-#include <Core/BlobPCH.h>
 
 void EditorLayer::OnAttach() {
     m_apples = Texture2D::Create("../../Sandbox/assets/apples.png");
@@ -157,7 +157,7 @@ void EditorLayer::OnImGuiRender() {
 
         DisplayDrawStatsWindow();
 
-        DisplayEntityEditorWindow();
+        m_entityEditor.DisplayEntityEditorWindow(m_scene, m_ViewportSize);
 
         DisplayViewport();
     }
@@ -181,152 +181,6 @@ void EditorLayer::DisplayViewport() {
     ImGui::End();
 }
 
-void EditorLayer::DisplayEntityEditorWindow() {
-    if (ImGui::Begin("Entities")) {
-        // Deselect if clicked on empty space
-        if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-            m_SelectedEntity = {};
-
-        m_scene.GetRegistry().each([&](auto entityID) {
-            Entity e(entityID, &m_scene);
-            auto tag = e.HasComponent<TagComponent>() ? e.GetComponent<TagComponent>().Tag.c_str() : std::to_string(
-                    (uint32_t) entityID).c_str();
-            ImGuiTreeNodeFlags flags =
-                    ((m_SelectedEntity == e) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow |
-                    ImGuiTreeNodeFlags_SpanAvailWidth;
-            bool opened = ImGui::TreeNodeEx((void *) entityID, flags, "%s", tag);
-            if (ImGui::IsItemClicked()) {
-                m_SelectedEntity = e;
-            }
-            if (opened) {
-                ImGui::Text("here can be a child of %s", tag);
-                ImGui::TreePop();
-            } else {
-//                    ImGui::TreePop();
-            }
-        });
-
-        // Show components of selected entity
-        if (ImGui::Begin("Components")) {
-            if (m_SelectedEntity) {
-                // Add components popup menu button
-                if (ImGui::Button("Add component")) {
-                    ImGui::OpenPopup("components");
-                }
-                if (ImGui::BeginPopup("components")) {
-                    bool has_anything_to_add = false;
-                    if (not m_SelectedEntity.HasComponent<TransformComponent>()) {
-                        if (ImGui::Selectable("TransformComponent")) {
-                            m_SelectedEntity.AddComponent<TransformComponent>();
-                        }
-                        has_anything_to_add = true;
-                    }
-                    if (not m_SelectedEntity.HasComponent<SpriteRendererComponent>()) {
-                        if (ImGui::Selectable("SpriteRendererComponent")) {
-                            m_SelectedEntity.AddComponent<SpriteRendererComponent>();
-                        }
-                        has_anything_to_add = true;
-                    }
-                    if (not m_SelectedEntity.HasComponent<CameraComponent>()) {
-                        if (ImGui::Selectable("CameraComponent")) {
-                            m_SelectedEntity.AddComponent<CameraComponent>();
-                            m_SelectedEntity.GetComponent<CameraComponent>().Camera.SetViewportSize(
-                                    (uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
-                        }
-                        has_anything_to_add = true;
-                    }
-                    if (not has_anything_to_add) {
-                        ImGui::Text("Nothing to add");
-                    }
-                    ImGui::EndPopup();
-                }
-                // Destroy entity button;
-                ImGui::SameLine();
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(218 / 255.0f, 40 / 255.0f, 40 / 255.0f, 1.0f));
-                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(239 / 255.0f, 103 / 255.0f, 103 / 255.0f, 1.0f));
-                ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(255 / 255.0f, 48 / 255.0f, 48 / 255.0f, 1.0f));
-                if (ImGui::Button("Destroy entity")) {
-                    m_scene.DestroyEntity(m_SelectedEntity);
-                    m_SelectedEntity = {};
-                    ImGui::PopStyleColor(3);
-                } else {
-                    ImGui::PopStyleColor(3);
-
-                    // functions for displaying ui for all components
-                    auto displayTagComponent = [&]() {
-                        auto &tag = m_SelectedEntity.GetComponent<TagComponent>().Tag;
-                        char buffer[256];
-                        memset(buffer, 0, sizeof(buffer));
-                        std::strncpy(buffer, tag.c_str(), sizeof(buffer));
-                        if (ImGui::InputText("##Tag", buffer, sizeof(buffer))) {
-                            tag = std::string(buffer);
-                        }
-                    };
-                    auto displayTransformComponent = [&]() {
-                        auto &transformComponent = m_SelectedEntity.GetComponent<TransformComponent>();
-                        ImGui::SliderFloat3("Position", glm::value_ptr(transformComponent.Position), -1.0f,
-                                            1.0f);
-                        ImGui::SliderAngle("Rotation",
-                                           &transformComponent.Rotation);
-                        ImGui::SliderFloat2("Scale", glm::value_ptr(transformComponent.Scale), -2.0f, 2.0f);
-                    };
-                    auto displaySpriteRendererComponent = [&]() {
-                        auto &component = m_SelectedEntity.GetComponent<SpriteRendererComponent>();
-                        ImGui::Text("Texture: ");
-                        ImGui::SameLine();
-                        if (component.Texture) {
-                            ImGui::Image((ImTextureID) (intptr_t) component.Texture->GetRendererID(), ImVec2(64, 64),
-                                         ImVec2(0, 1),
-                                         ImVec2(1, 0));
-                            ImGui::SliderFloat("Tiling factor", &component.TilingFactor, 1.0f, 10.0f);
-                            ImGui::ColorEdit4("Tint Color", glm::value_ptr(component.Color));
-                        } else {
-                            ImGui::Text("None");
-                            ImGui::Text("Tiling factor: None");
-                            ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
-                        }
-                    };
-                    auto displayCameraComponent = [&]() {
-                        auto &component = m_SelectedEntity.GetComponent<CameraComponent>();
-                        ImGui::Checkbox("Primary", &component.Primary);
-                        float orthoSize = component.Camera.GetOrthographicSize();
-                        if (ImGui::DragFloat("Orthographic Size", &orthoSize))
-                            component.Camera.SetOrthographicSize(orthoSize);
-                    };
-                    // Display components if they exist
-                    ImGui::SameLine();
-                    displayTagComponent(); // except for TagComponent which is always exist
-                    DisplayComponent<TransformComponent>(displayTransformComponent, "TransformComponent");
-                    DisplayComponent<SpriteRendererComponent>(displaySpriteRendererComponent,
-                                                              "SpriteRendererComponent");
-                    DisplayComponent<CameraComponent>(displayCameraComponent,
-                                                      "CameraComponent");
-                }
-            } else {
-                // If no entity selected
-                ImGui::Text("Click on entity in the 'Entities' menu to see/edit it's components");
-                ImGui::Text("Or ");
-                ImGui::SameLine();
-                if (ImGui::Button("Create new entity")) {
-                    m_scene.CreateEntity();
-                }
-            }
-            ImGui::End();
-        } else
-            ImGui::End();
-
-        // Right mouse button click response
-        if (ImGui::BeginPopupContextWindow(nullptr, 1, false)) {
-            if (ImGui::MenuItem("Add entity")) {
-                m_scene.CreateEntity();
-            }
-            ImGui::EndPopup();
-        }
-
-    }
-    ImGui::End();
-}
-
 void EditorLayer::DisplayDrawStatsWindow() const {
     if (ImGui::Begin("Renderer2D Stats")) {
         ImGui::Text("FPS %.2f", ImGui::GetIO().Framerate);
@@ -342,37 +196,7 @@ void EditorLayer::DisplayDrawStatsWindow() const {
     ImGui::End();
 }
 
-EditorLayer::EditorLayer() {
+EditorLayer::EditorLayer(){
 
-}
-
-template<class T, class F>
-bool EditorLayer::DisplayComponent(F UIfunction, const char *title) {
-    if (m_SelectedEntity.HasComponent<T>()) {
-        ImGui::PushID(title);
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(218 / 255.0f, 40 / 255.0f, 40 / 255.0f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(239 / 255.0f, 103 / 255.0f, 103 / 255.0f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(255 / 255.0f, 48 / 255.0f, 48 / 255.0f, 1.0f));
-        if (ImGui::Button("X")) {
-            ImGui::PopStyleColor(3);
-            m_SelectedEntity.RemoveComponent<T>();
-            ImGui::PopID();
-            return true;
-        } else {
-            ImGui::PopStyleColor(3);
-            ImGui::SameLine();
-
-            //TODO mb draw icon for component?
-
-            if (ImGui::CollapsingHeader(title)) {
-                ImGui::Indent(30.0f);
-                UIfunction();
-                ImGui::Unindent(30.0f);
-            }
-        }
-        ImGui::PopID();
-        return true;
-    }
-    return false;
 }
 

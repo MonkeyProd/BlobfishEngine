@@ -7,7 +7,6 @@
 class Sandbox2D : public bf::Layer {
 private:
     bf::Framebuffer* m_Framebuffer;
-    bf::OrthographicCameraController m_cameraController;
     bf::Texture2D *m_apples;
     glm::vec3 m_apple_pos;
 

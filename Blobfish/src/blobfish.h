@@ -34,8 +34,6 @@
 #include <Renderer/RendererAPI.h>
 #include <Renderer/RenderCommand.h>
 #include <Renderer/RenderContext.h>
-#include <Renderer/OrthographicCamera.h>
-#include <Renderer/OrthographicCameraController.h>
 #include <Renderer/Shader.h>
 #include <Renderer/Texture.h>
 #include <Renderer/SubTexture2D.h>

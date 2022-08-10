@@ -1,7 +1,6 @@
 #ifndef COMPOUND_RENDERER2D_H
 #define COMPOUND_RENDERER2D_H
 
-#include "OrthographicCamera.h"
 #include "Texture.h"
 #include "SubTexture2D.h"
 #include "Shader.h"

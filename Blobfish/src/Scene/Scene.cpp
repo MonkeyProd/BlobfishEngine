@@ -35,17 +35,21 @@ namespace bf {
         }
 
         if (mainCamera) {
-            Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
-            auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-            for (auto entity: group) {
-                auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-                if (sprite.Texture)
-                    Renderer2D::DrawQuad(transform.GetTransform(), sprite.Texture, sprite.TilingFactor, sprite.Color);
-                else
-                    Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
-            }
-            Renderer2D::EndScene();
+            RenderScene(*mainCamera, cameraTransform);
         }
+    }
+
+    void Scene::RenderScene(const Camera &camera, const glm::mat4 &cameraTransform) {
+        Renderer2D::BeginScene(camera.GetProjection(), cameraTransform);
+        auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+        for (auto entity: group) {
+            auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+            if (sprite.Texture)
+                Renderer2D::DrawQuad(transform.GetTransform(), sprite.Texture, sprite.TilingFactor, sprite.Color);
+            else
+                Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+        }
+        Renderer2D::EndScene();
     }
 
     void Scene::OnViewportResize(uint32_t width, uint32_t height)

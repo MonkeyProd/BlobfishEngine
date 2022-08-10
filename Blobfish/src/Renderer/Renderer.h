@@ -3,7 +3,6 @@
 
 #include "RenderCommand.h"
 #include "Shader.h"
-#include "OrthographicCamera.h"
 #include "Texture.h"
 
 namespace bf {
@@ -11,12 +10,6 @@ namespace bf {
     class Renderer {
     public:
         static void Init();
-
-        static void BeginScene(OrthographicCamera &camera);
-
-        static void EndScene();
-
-        static void Submit(VertexArray *vertexArray, Shader *shader, glm::mat4 &Transform, Texture *texture);
 
         static void OnWindowResize(unsigned int width, unsigned int height);
 
