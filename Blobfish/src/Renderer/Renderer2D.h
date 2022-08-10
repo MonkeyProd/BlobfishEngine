@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "VertexArray.h"
 #include "RenderCommand.h"
+#include "Camera.h"
 #include <glm/glm.hpp>
 
 namespace bf {
@@ -16,7 +17,7 @@ namespace bf {
         static void Init();
         static void Shutdown();
 
-        static void BeginScene(const OrthographicCamera& camera);
+        static void BeginScene(const Camera& camera, const glm::mat4& transform);
         static void EndScene();
         static void Flush();
 

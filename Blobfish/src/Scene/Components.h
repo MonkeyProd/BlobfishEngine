@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <Renderer/Texture.h>
 #include <Core/BlobPCH.h>
+#include "Renderer/Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace bf {
@@ -51,14 +52,17 @@ namespace bf {
                 : Color(color) {}
     };
 
-    struct TestComponent {
-        glm::vec2 some_data;
+    struct CameraComponent {
+        Camera Camera;
+        bool Primary = true;
+        bool FixedAspectRatio = false;
 
-        TestComponent() = default;
+        CameraComponent() = default;
 
-        TestComponent(const TestComponent &) = default;
+        CameraComponent(const CameraComponent &) = default;
 
-        TestComponent(const glm::vec2 &someData) : some_data(someData) {}
+        CameraComponent(const glm::mat4 &projection)
+                : Camera(projection) {}
     };
 }
 

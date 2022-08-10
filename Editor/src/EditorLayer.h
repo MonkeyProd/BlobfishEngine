@@ -8,12 +8,9 @@ using namespace bf;
 class EditorLayer : public Layer {
 private:
     bf::Framebuffer *m_Framebuffer;
-    bf::OrthographicCameraController m_cameraController;
     bf::Texture2D *m_apples;
     glm::vec2 m_ViewportSize = {0, 0};
 
-    Entity m_test_entity;
-    Entity m_apples_entity;
     Scene m_scene;
     Entity m_SelectedEntity;
 public:
