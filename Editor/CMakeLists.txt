@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_compile_definitions(TRACY_ENABLE)
 
-file(GLOB SOURCE_FILES src/*.cpp src/*.h)
+file(GLOB SOURCE_FILES src/**.cpp src/**.h)
 file(GLOB TRACY_PROFILER_FILES extern/tracy/TracyClient.cpp)
 add_executable(editor ${SOURCE_FILES} ${TRACY_PROFILER_FILES})
 
