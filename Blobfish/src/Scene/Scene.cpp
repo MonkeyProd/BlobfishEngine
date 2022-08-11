@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Components.h"
 #include <Renderer/Renderer2D.h>
+#include "NativeScript.h"
 
 namespace bf {
     Scene::Scene() {
@@ -20,6 +21,20 @@ namespace bf {
     }
 
     void Scene::OnUpdate(Timestep ts) {
+        // Update scripts
+        {
+            auto view = m_Registry.view<NativeScriptComponent>();
+            for (auto &entity: view) {
+                auto &script = m_Registry.get<NativeScriptComponent>(entity);
+                if (not script.Instance) {
+                    script.InstantiateFunction();
+                    script.Instance->m_Entity = Entity{entity, this};
+                    script.Instance->OnCreate();
+                }
+                script.Instance->OnUpdate(ts);
+            }
+        }
+
         Camera *mainCamera = nullptr;
         glm::mat4 cameraTransform{1.0f};
         {
@@ -28,7 +43,6 @@ namespace bf {
                 auto [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
                 if (camera.Primary) {
                     mainCamera = &camera.Camera;
-                    transform.Position.x += 2.0f * ts; //todo remove this line. just for testing purposes
                     cameraTransform = transform.GetTransform();
                     break;
                 }
@@ -40,6 +54,18 @@ namespace bf {
     }
 
     void Scene::OnUpdateEditor(Timestep ts, EditorCamera *camera) {
+        // TODO think about if it need to be here
+        // create all entities with NativeScript
+        auto view = m_Registry.view<NativeScriptComponent>();
+        for (auto &entity: view) {
+            auto &script = m_Registry.get<NativeScriptComponent>(entity);
+            if (not script.Instance) {
+                script.InstantiateFunction();
+                script.Instance->m_Entity = Entity{entity, this};
+                script.Instance->OnCreate();
+            }
+        }
+
         // Render
         RenderScene(camera, camera->Transform.GetTransform());
     }

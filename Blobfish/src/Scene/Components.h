@@ -6,6 +6,7 @@
 #include <Core/BlobPCH.h>
 #include "Renderer/Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <Core/Timestep.h>
 
 namespace bf {
     struct TagComponent {
@@ -63,6 +64,25 @@ namespace bf {
 
         CameraComponent(const glm::mat4 &projection)
                 : Camera(projection) {}
+    };
+
+    // Forward declaration
+    class NativeScript;
+
+
+    struct NativeScriptComponent
+    {
+        NativeScript* Instance = nullptr;
+
+        std::function<void()> InstantiateFunction;
+        std::function<void()> DestroyInstanceFunction;
+
+        template<typename T>
+        void Bind()
+        {
+            InstantiateFunction = [&]() { Instance = new T(); };
+            DestroyInstanceFunction = [&]() { delete (T*)Instance; Instance = nullptr; };
+        }
     };
 }
 

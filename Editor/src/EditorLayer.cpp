@@ -2,6 +2,49 @@
 #include "EntityEditor.h"
 #include <glm/gtc/type_ptr.hpp>
 
+// todo remove this
+#include <glm/gtx/compatibility.hpp>
+
+class Apples : public NativeScript {
+public:
+    void OnUpdate(Timestep ts) override {
+        constexpr float speed = 1.0f;
+        auto &transform = GetComponent<TransformComponent>();
+        if (Input::IsKeyPressed(Key::W))
+            transform.Position.y += ts * speed;
+        if (Input::IsKeyPressed(Key::A))
+            transform.Position.x -= ts * speed;
+        if (Input::IsKeyPressed(Key::S))
+            transform.Position.y -= ts * speed;
+        if (Input::IsKeyPressed(Key::D))
+            transform.Position.x += ts * speed;
+    }
+
+    void OnImGuiRender() override {
+        ImGui::Text("hello im apple");
+    }
+};
+
+
+class CameraFollow : public NativeScript {
+public:
+    float smooth = 1.0f;
+
+    void OnImGuiRender() override {
+        ImGui::Text("hello from camera follow script");
+        ImGui::SliderFloat("smooth", &smooth, 0.0f, 10.0f);
+    }
+
+    void OnUpdate(Timestep ts) override {
+        auto apples = Find("apples");
+        if (apples) {
+            glm::vec3 &target = apples->GetComponent<TransformComponent>().Position;
+            auto &pos = GetComponent<TransformComponent>().Position;
+            pos = glm::lerp(pos, target, ts * smooth);
+        }
+    }
+};
+
 void EditorLayer::OnAttach() {
     m_apples = Texture2D::Create("../../Sandbox/assets/apples.png");
     m_Framebuffer = Framebuffer::Create({1280, 720});
@@ -11,8 +54,17 @@ void EditorLayer::OnAttach() {
     float FontSize = 13;
     io.Fonts->AddFontFromFileTTF("../../Editor/Assets/Fonts/Ubuntu-Regular.ttf", FontSize);
     auto apples = m_scene.CreateEntity("apples");
-    apples.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    apples.AddComponent<SpriteRendererComponent>();
     apples.GetComponent<SpriteRendererComponent>().Texture = m_apples;
+    apples.AddComponent<NativeScriptComponent>().Bind<Apples>();
+
+    auto backgound = m_scene.CreateEntity("backgound");
+    backgound.AddComponent<SpriteRendererComponent>();
+    backgound.GetComponent<SpriteRendererComponent>().Texture = Texture2D::Create("../../Sandbox/assets/chessmate.jpg");
+    backgound.GetComponent<TransformComponent>().Scale = glm::vec2{5.0f};
+
+    auto camera = m_scene.CreateEntity("camera");
+    camera.AddComponent<NativeScriptComponent>().Bind<CameraFollow>();
 
     ImVec4 *colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -196,6 +248,12 @@ void EditorLayer::DisplayViewport() {
     }
     ImGui::End();
 }
+//
+//template<class T, class ReturnType, typename ...Args>
+//static constexpr bool hasOnUpdate(T, ReturnType(Args...)) {
+//    return std::is_same<decltype(std::declval<T>().OnUpdate(std::declval<Args>()...)), ReturnType>::value;
+//}
+
 
 void EditorLayer::DisplayDrawStatsWindow() const {
     if (ImGui::Begin("Renderer2D Stats")) {

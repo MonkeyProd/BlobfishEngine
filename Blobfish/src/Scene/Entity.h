@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include <Core/BlobPCH.h>
 #include <entt.hpp>
+#include <optional>
 
 namespace bf {
 
@@ -50,6 +51,16 @@ namespace bf {
 
         bool operator!=(const Entity &other) const {
             return !(*this == other);
+        }
+
+        std::optional<Entity> Find(const std::string &Tag){
+            auto view = m_Scene->m_Registry.view<TagComponent>();
+            for(auto entity: view){
+                if(m_Scene->m_Registry.get<TagComponent>(entity).Tag==Tag){
+                    return Entity{entity, m_Scene};
+                }
+            }
+            return {};
         }
 
     private:

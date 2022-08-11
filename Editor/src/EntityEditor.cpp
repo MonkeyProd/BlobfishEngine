@@ -55,6 +55,16 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                                     (uint32_t) viewportSize.x, (uint32_t) viewportSize.y);
                         }
                         has_anything_to_add = true;
+                    }if (not m_SelectedEntity.HasComponent<NativeScriptComponent>()) {
+                        if (ImGui::Selectable("NativeScriptComponent")) {
+                            m_SelectedEntity.AddComponent<NativeScriptComponent>().Bind<NativeScript>();
+                            // TODO think about initializing NativeScript
+                            ImGui::EndPopup(); // 'Add component' popup
+                            ImGui::End(); // 'Components' window
+                            ImGui::End(); // 'Entities' window
+                            return; // early exit to prevent access to uninitialized NativeScript->Instance
+                        }
+                        has_anything_to_add = true;
                     }
                     if (not has_anything_to_add) {
                         ImGui::Text("Nothing to add");
@@ -114,6 +124,10 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                         if (ImGui::DragFloat("Orthographic Size", &orthoSize))
                             component.Camera.SetOrthographicSize(orthoSize);
                     };
+                    auto displayNativeScriptComponent = [&](){
+                        auto &script = m_SelectedEntity.GetComponent<NativeScriptComponent>();
+                            script.Instance->OnImGuiRender();
+                    };
                     // Display components if they exist
                     ImGui::SameLine();
                     displayTagComponent(); // except for TagComponent which is always exist
@@ -122,6 +136,7 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                                                               "SpriteRendererComponent");
                     DisplayComponent<CameraComponent>(displayCameraComponent,
                                                       "CameraComponent");
+                    DisplayComponent<NativeScriptComponent>(displayNativeScriptComponent, "NativeScriptComponent");
                 }
             } else {
                 // If no entity selected
