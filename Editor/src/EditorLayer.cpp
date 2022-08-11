@@ -6,9 +6,9 @@
 #include <glm/gtx/compatibility.hpp>
 
 class Apples : public NativeScript {
+    float speed = 1.0f;
 public:
     void OnUpdate(Timestep ts) override {
-        constexpr float speed = 1.0f;
         auto &transform = GetComponent<TransformComponent>();
         if (Input::IsKeyPressed(Key::W))
             transform.Position.y += ts * speed;
@@ -22,6 +22,8 @@ public:
 
     void OnImGuiRender() override {
         ImGui::Text("hello im apple");
+        ImGui::SliderFloat("speed", &speed, 0.0f, 10.0f);
+
     }
 };
 

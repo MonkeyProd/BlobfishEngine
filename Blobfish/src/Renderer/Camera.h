@@ -39,6 +39,21 @@ namespace bf {
             RecalculateProjection();
         }
 
+        float GetOrthographicNearClip() const { return m_OrthographicNear; }
+
+        void SetOrthographicNearClip(float size) {
+            m_OrthographicNear = size;
+            RecalculateProjection();
+        }
+
+        float GetOrthographicFarClip() const { return m_OrthographicFar; }
+
+        void SetOrthographicFarClip(float size) {
+            m_OrthographicFar = size;
+            RecalculateProjection();
+        }
+
+
     private:
         void RecalculateProjection() {
             float orthoLeft = -m_OrthographicSize * m_AspectRatio * 0.5f;

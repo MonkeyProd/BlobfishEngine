@@ -95,11 +95,10 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                     };
                     auto displayTransformComponent = [&]() {
                         auto &transformComponent = m_SelectedEntity.GetComponent<TransformComponent>();
-                        ImGui::SliderFloat3("Position", glm::value_ptr(transformComponent.Position), -1.0f,
-                                            1.0f);
+                        ImGui::DragFloat3("Position", glm::value_ptr(transformComponent.Position));
                         ImGui::SliderAngle("Rotation",
                                            &transformComponent.Rotation);
-                        ImGui::SliderFloat2("Scale", glm::value_ptr(transformComponent.Scale), -2.0f, 2.0f);
+                        ImGui::DragFloat2("Scale", glm::value_ptr(transformComponent.Scale));
                     };
                     auto displaySpriteRendererComponent = [&]() {
                         auto &component = m_SelectedEntity.GetComponent<SpriteRendererComponent>();
@@ -109,7 +108,7 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                             ImGui::Image((ImTextureID) (intptr_t) component.Texture->GetRendererID(), ImVec2(64, 64),
                                          ImVec2(0, 1),
                                          ImVec2(1, 0));
-                            ImGui::SliderFloat("Tiling factor", &component.TilingFactor, 1.0f, 10.0f);
+                            ImGui::DragFloat("Tiling factor", &component.TilingFactor, 1.0f, 0.0f, 100.0f);
                             ImGui::ColorEdit4("Tint Color", glm::value_ptr(component.Color));
                         } else {
                             ImGui::Text("None");
@@ -120,13 +119,27 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                     auto displayCameraComponent = [&]() {
                         auto &component = m_SelectedEntity.GetComponent<CameraComponent>();
                         ImGui::Checkbox("Primary", &component.Primary);
-                        float orthoSize = component.Camera.GetOrthographicSize();
-                        if (ImGui::DragFloat("Orthographic Size", &orthoSize))
+                        auto& camera = component.Camera;
+
+                        float orthoSize = camera.GetOrthographicSize();
+                        if (ImGui::DragFloat("Orthographic Size", &orthoSize, 1.0f, 0.0f, 100.0f))
                             component.Camera.SetOrthographicSize(orthoSize);
+
+                        float orthoNear = camera.GetOrthographicNearClip();
+                        if (ImGui::DragFloat("Near", &orthoNear))
+                            camera.SetOrthographicNearClip(orthoNear);
+
+                        float orthoFar = camera.GetOrthographicFarClip();
+                        if (ImGui::DragFloat("Far", &orthoFar))
+                            camera.SetOrthographicFarClip(orthoFar);
+
+                        ImGui::Checkbox("Primary", &component.Primary);
+                        ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
+
                     };
-                    auto displayNativeScriptComponent = [&](){
+                    auto displayNativeScriptComponent = [&]() {
                         auto &script = m_SelectedEntity.GetComponent<NativeScriptComponent>();
-                            script.Instance->OnImGuiRender();
+                        script.Instance->OnImGuiRender();
                     };
                     // Display components if they exist
                     ImGui::SameLine();
