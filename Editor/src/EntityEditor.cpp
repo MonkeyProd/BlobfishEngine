@@ -51,7 +51,7 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                     if (not m_SelectedEntity.HasComponent<CameraComponent>()) {
                         if (ImGui::Selectable("CameraComponent")) {
                             m_SelectedEntity.AddComponent<CameraComponent>();
-                            m_SelectedEntity.GetComponent<CameraComponent>().Camera.SetViewportSize(
+                            m_SelectedEntity.GetComponent<CameraComponent>().m_Camera.SetViewportSize(
                                     (uint32_t) viewportSize.x, (uint32_t) viewportSize.y);
                         }
                         has_anything_to_add = true;
@@ -120,9 +120,9 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                     auto displayCameraComponent = [&]() {
                         auto &component = m_SelectedEntity.GetComponent<CameraComponent>();
                         ImGui::Checkbox("Primary", &component.Primary);
-                        float orthoSize = component.Camera.GetOrthographicSize();
+                        float orthoSize = component.m_Camera.GetOrthographicSize();
                         if (ImGui::DragFloat("Orthographic Size", &orthoSize))
-                            component.Camera.SetOrthographicSize(orthoSize);
+                            component.m_Camera.SetOrthographicSize(orthoSize);
                     };
                     auto displayNativeScriptComponent = [&](){
                         auto &script = m_SelectedEntity.GetComponent<NativeScriptComponent>();

@@ -54,7 +54,7 @@ namespace bf {
     };
 
     struct CameraComponent {
-        Camera Camera;
+        Camera m_Camera;
         bool Primary = true;
         bool FixedAspectRatio = false;
 
@@ -63,7 +63,7 @@ namespace bf {
         CameraComponent(const CameraComponent &) = default;
 
         CameraComponent(const glm::mat4 &projection)
-                : Camera(projection) {}
+                : m_Camera(projection) {}
     };
 
     // Forward declaration

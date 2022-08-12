@@ -42,7 +42,7 @@ namespace bf {
             for (auto entity: group) {
                 auto [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
                 if (camera.Primary) {
-                    mainCamera = &camera.Camera;
+                    mainCamera = &camera.m_Camera;
                     cameraTransform = transform.GetTransform();
                     break;
                 }
@@ -92,7 +92,7 @@ namespace bf {
         for (auto entity: view) {
             auto &cameraComponent = view.get<CameraComponent>(entity);
             if (!cameraComponent.FixedAspectRatio)
-                cameraComponent.Camera.SetViewportSize(width, height);
+                cameraComponent.m_Camera.SetViewportSize(width, height);
         }
 
     }
