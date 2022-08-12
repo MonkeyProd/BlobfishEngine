@@ -51,7 +51,7 @@ void EntityEditor::DisplayEntityEditorWindow(Scene *scene, glm::vec2 &viewportSi
                     if (not m_SelectedEntity.HasComponent<CameraComponent>()) {
                         if (ImGui::Selectable("CameraComponent")) {
                             m_SelectedEntity.AddComponent<CameraComponent>();
-                            m_SelectedEntity.GetComponent<CameraComponent>().Camera.SetViewportSize(
+                            m_SelectedEntity.GetComponent<CameraComponent>().m_Camera.SetViewportSize(
                                     (uint32_t) viewportSize.x, (uint32_t) viewportSize.y);
                         }
                         has_anything_to_add = true;
@@ -118,11 +118,11 @@ void EntityEditor::DisplayEntityEditorWindow(Scene *scene, glm::vec2 &viewportSi
                     };
                     auto displayCameraComponent = [&]() {
                         auto &component = m_SelectedEntity.GetComponent<CameraComponent>();
-                        auto& camera = component.Camera;
+                        auto& camera = component.m_Camera;
 
                         float orthoSize = camera.GetOrthographicSize();
-                        if (ImGui::DragFloat("Orthographic Size", &orthoSize, 1.0f, 0.0f, 100.0f))
-                            component.Camera.SetOrthographicSize(orthoSize);
+                        if (ImGui::DragFloat("Orthographic Size", &orthoSize))
+                            camera.SetOrthographicSize(orthoSize);
 
                         float orthoNear = camera.GetOrthographicNearClip();
                         if (ImGui::DragFloat("Near", &orthoNear))
@@ -134,7 +134,6 @@ void EntityEditor::DisplayEntityEditorWindow(Scene *scene, glm::vec2 &viewportSi
 
                         ImGui::Checkbox("Primary", &component.Primary);
                         ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
-
                     };
                     auto displayNativeScriptComponent = [&]() {
                         auto &script = m_SelectedEntity.GetComponent<NativeScriptComponent>();
