@@ -37,6 +37,7 @@ include_directories(extern/spdlog/include)
 include_directories(extern/imgui)
 include_directories(extern/stb)
 include_directories(extern/entt)
+include_directories(extern/pugixml/src)
 include_directories(src)
 
 target_include_directories(blobfish PUBLIC extern/imgui extern/tracy extern/entt)
@@ -46,11 +47,12 @@ add_subdirectory(extern/glfw)
 add_subdirectory(extern/spdlog)
 add_subdirectory(extern/glm)
 add_subdirectory(extern/tracy)
+add_subdirectory(extern/pugixml)
 
 link_directories(extern/glfw)
 
 find_package(OpenGL REQUIRED)
 
-include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${TRACY_INCLUDE_DIRS})
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${TRACY_INCLUDE_DIRS} ${PUGIXML_INCLUDE_DIRS})
 
-target_link_libraries(blobfish OpenGL::GL glfw spdlog glm Tracy::TracyClient)
+target_link_libraries(blobfish OpenGL::GL glfw spdlog glm Tracy::TracyClient pugixml)

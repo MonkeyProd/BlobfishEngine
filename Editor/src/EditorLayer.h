@@ -4,6 +4,7 @@
 #include <blobfish.h>
 #include "EntityEditor.h"
 #include "Scene/EditorCamera.h"
+#include <Scene/Serializer.h>
 
 using namespace bf;
 
@@ -17,7 +18,7 @@ private:
 
 protected:
     glm::vec2 m_ViewportSize = {0, 0};
-    Scene m_scene;
+    Scene *m_scene;
 public:
     EditorLayer();
 

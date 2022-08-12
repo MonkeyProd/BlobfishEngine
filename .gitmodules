@@ -16,3 +16,6 @@
 [submodule "Blobfish/extern/stb"]
 	path = Blobfish/extern/stb
 	url = https://github.com/nothings/stb.git
+[submodule "Blobfish/extern/pugixml"]
+	path = Blobfish/extern/pugixml
+	url = https://github.com/zeux/pugixml

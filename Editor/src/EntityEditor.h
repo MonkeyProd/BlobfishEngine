@@ -7,7 +7,7 @@ using namespace bf;
 
 class EntityEditor {
 public:
-    void DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSize);
+    void DisplayEntityEditorWindow(Scene *scene, glm::vec2 &viewportSize);
 
 private:
     Entity m_SelectedEntity;

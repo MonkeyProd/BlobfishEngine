@@ -2,14 +2,14 @@
 #include <glm/gtc/type_ptr.hpp>
 using namespace bf;
 
-void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSize) {
+void EntityEditor::DisplayEntityEditorWindow(Scene *scene, glm::vec2 &viewportSize) {
     if (ImGui::Begin("Entities")) {
         // Deselect if clicked on empty space
         if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
             m_SelectedEntity = {};
 
-        scene.GetRegistry().each([&](auto entityID) {
-            Entity e(entityID, &scene);
+        scene->GetRegistry().each([&](auto entityID) {
+            Entity e(entityID, scene);
             auto tag = e.HasComponent<TagComponent>() ? e.GetComponent<TagComponent>().Tag.c_str() : std::to_string(
                     (uint32_t) entityID).c_str();
             ImGuiTreeNodeFlags flags =
@@ -77,7 +77,7 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(239 / 255.0f, 103 / 255.0f, 103 / 255.0f, 1.0f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(255 / 255.0f, 48 / 255.0f, 48 / 255.0f, 1.0f));
                 if (ImGui::Button("Destroy entity")) {
-                    scene.DestroyEntity(m_SelectedEntity);
+                    scene->DestroyEntity(m_SelectedEntity);
                     m_SelectedEntity = {};
                     ImGui::PopStyleColor(3);
                 } else {
@@ -118,7 +118,6 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                     };
                     auto displayCameraComponent = [&]() {
                         auto &component = m_SelectedEntity.GetComponent<CameraComponent>();
-                        ImGui::Checkbox("Primary", &component.Primary);
                         auto& camera = component.Camera;
 
                         float orthoSize = camera.GetOrthographicSize();
@@ -157,7 +156,7 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
                 ImGui::Text("Or ");
                 ImGui::SameLine();
                 if (ImGui::Button("Create new entity")) {
-                    scene.CreateEntity();
+                    scene->CreateEntity();
                 }
             }
             ImGui::End();
@@ -167,7 +166,7 @@ void EntityEditor::DisplayEntityEditorWindow(Scene &scene, glm::vec2 &viewportSi
         // Right mouse button click response
         if (ImGui::BeginPopupContextWindow(nullptr, 1, false)) {
             if (ImGui::MenuItem("Add entity")) {
-                scene.CreateEntity();
+                scene->CreateEntity();
             }
             ImGui::EndPopup();
         }

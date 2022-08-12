@@ -48,6 +48,8 @@ public:
 };
 
 void EditorLayer::OnAttach() {
+    m_scene = new Scene;
+    
     m_apples = Texture2D::Create("../../Sandbox/assets/apples.png");
     m_Framebuffer = Framebuffer::Create({1280, 720});
     m_camera = new EditorCamera;
@@ -55,18 +57,19 @@ void EditorLayer::OnAttach() {
     ImGuiIO &io = ImGui::GetIO();
     float FontSize = 13;
     io.Fonts->AddFontFromFileTTF("../../Editor/Assets/Fonts/Ubuntu-Regular.ttf", FontSize);
-    auto apples = m_scene.CreateEntity("apples");
+    auto apples = m_scene->CreateEntity("apples");
     apples.AddComponent<SpriteRendererComponent>();
     apples.GetComponent<SpriteRendererComponent>().Texture = m_apples;
     apples.AddComponent<NativeScriptComponent>().Bind<Apples>();
 
-    auto backgound = m_scene.CreateEntity("backgound");
-    backgound.AddComponent<SpriteRendererComponent>();
-    backgound.GetComponent<SpriteRendererComponent>().Texture = Texture2D::Create("../../Sandbox/assets/chessmate.jpg");
-    backgound.GetComponent<TransformComponent>().Scale = glm::vec2{5.0f};
+    auto background = m_scene->CreateEntity("background");
+    background.AddComponent<SpriteRendererComponent>();
+    background.GetComponent<SpriteRendererComponent>().Texture = Texture2D::Create("../../Sandbox/assets/chessmate.jpg");
+    background.GetComponent<TransformComponent>().Scale = glm::vec2{5.0f};
 
-    auto camera = m_scene.CreateEntity("camera");
+    auto camera = m_scene->CreateEntity("camera");
     camera.AddComponent<NativeScriptComponent>().Bind<CameraFollow>();
+    camera.AddComponent<CameraComponent>().Camera.SetViewportSize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
 
     ImVec4 *colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -129,6 +132,7 @@ void EditorLayer::OnAttach() {
 void EditorLayer::OnDetach() {
     BF_LOG_INFO("Detaching");
     delete m_camera;
+    delete m_scene;
 }
 
 void EditorLayer::OnUpdate(Timestep ts) {
@@ -137,7 +141,7 @@ void EditorLayer::OnUpdate(Timestep ts) {
         m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
 //        m_cameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
         m_camera->SetViewportSize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
-        m_scene.OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
+        m_scene->OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
     }
 
     m_camera->OnUpdate(ts, m_ViewportSize);
@@ -148,9 +152,9 @@ void EditorLayer::OnUpdate(Timestep ts) {
 
     Renderer2D::ResetStats();
     if (running) {
-        m_scene.OnUpdate(ts);
+        m_scene->OnUpdate(ts);
     } else {
-        m_scene.OnUpdateEditor(ts, m_camera);
+        m_scene->OnUpdateEditor(ts, m_camera);
     }
 
     m_Framebuffer->Unbind();
@@ -209,6 +213,18 @@ void EditorLayer::OnImGuiRender() {
                 if (ImGui::MenuItem("Exit")) {
                     auto e = WindowCloseEvent();
                     Application::getInstance()->EmitEvent(e);
+                }
+                if (ImGui::MenuItem("Save")) {
+                    Serializer s(m_scene);
+                    s.Serialize("test scene", "test.xml");
+                }
+                if(ImGui::MenuItem("Load")){
+                    Scene *new_scene = new Scene;
+                    Serializer s(new_scene);
+                    s.Deserialize("test.xml");
+                    m_scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+                    delete m_scene;
+                    m_scene = new_scene;
                 }
                 ImGui::EndMenu();
             }

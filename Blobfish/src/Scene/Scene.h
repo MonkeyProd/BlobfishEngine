@@ -7,6 +7,8 @@
 #include "EditorCamera.h"
 
 namespace bf {
+    // forward declaration
+    class Serializer;
 
     class Entity;
 
@@ -37,6 +39,7 @@ namespace bf {
 
         friend class Entity;
 
+        friend class Serializer;
     };
 
 } // bf
