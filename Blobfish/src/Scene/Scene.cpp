@@ -10,11 +10,17 @@ namespace bf {
     }
 
     Scene::~Scene() {
+        m_Registry.each([&](auto entityID) {
+            // TODO ALL POSSIBLE COMPONENTS MUST BE IN THE FOLLOWING LINE
+            m_Registry.remove<TagComponent, TransformComponent, SpriteRendererComponent, CameraComponent, NativeScriptComponent>(
+                    entityID);
+            m_Registry.destroy(entityID);
+        });
     }
 
     Entity Scene::CreateEntity(const std::string &name) {
         Entity entity = {m_Registry.create(), this};
-        entity.AddComponent<TransformComponent>();
+        entity.AddOrReplaceComponent<TransformComponent>();
         auto &tag = entity.AddComponent<TagComponent>();
         tag.Tag = name.empty() ? "Entity" : name;
         return entity;

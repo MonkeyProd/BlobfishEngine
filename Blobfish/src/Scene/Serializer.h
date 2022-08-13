@@ -9,7 +9,7 @@ namespace bf {
     class Serializer {
     public:
         Serializer(Scene *scene);
-        void Serialize(const std::string &name, const std::string &path);
+        void Serialize(const std::string &path);
         void Deserialize(const std::string& filepath); // TODO mb return bool as a signal of deserialization success
     private:
         void SerializeEntity(Entity &entity);

@@ -5,6 +5,7 @@
 #include "EntityEditor.h"
 #include "Scene/EditorCamera.h"
 #include <Scene/Serializer.h>
+#include <ImGuiFileDialog.h>
 
 using namespace bf;
 
@@ -15,6 +16,7 @@ private:
     EntityEditor m_entityEditor;
     EditorCamera *m_camera;
     bool running = false;
+    std::string m_path;
 
 protected:
     glm::vec2 m_ViewportSize = {0, 0};
@@ -30,10 +32,22 @@ public:
 
     void OnImGuiRender() override;
 
+    bool OnKeyPressedEvent(KeyPressedEvent &event) override;
+
 private:
     void DisplayDrawStatsWindow() const;
 
     void DisplayViewport();
+
+    void Save();
+
+    void SaveAs();
+
+    void Open();
+
+    void NewScene();
+
+    void Exit() const;
 };
 
 

@@ -8,10 +8,9 @@ namespace bf {
 
     }
 
-    void Serializer::Serialize(const std::string &name, const std::string &path) {
+    void Serializer::Serialize(const std::string &path) {
         doc.reset();
         auto scene_node = doc.append_child("scene");
-        scene_node.append_attribute("name") = name.c_str();
         m_scene->m_Registry.each([&](auto entityID) {
             Entity e{entityID, m_scene};
             if (not e) return;
@@ -72,7 +71,7 @@ namespace bf {
                 auto size = camera_node.attribute("orthographic-size").as_float();
                 auto near = camera_node.attribute("orthographic-near-clip").as_float();
                 auto far = camera_node.attribute("orthographic-far-clip").as_float();
-                camera_component.Camera.SetOrthographic(size, near, far);
+                camera_component.m_Camera.SetOrthographic(size, near, far);
             }
             if (entity_node.child("components").attribute("NativeScriptComponent").as_bool()) {
                 // todo implement this
@@ -134,9 +133,9 @@ namespace bf {
             flags_node.append_attribute("fixed-aspect-ratio") = camera.FixedAspectRatio;
 
             auto camera_node = camera_component_node.append_child("camera");
-            camera_node.append_attribute("orthographic-size") = camera.Camera.GetOrthographicSize();
-            camera_node.append_attribute("orthographic-near-clip") = camera.Camera.GetOrthographicNearClip();
-            camera_node.append_attribute("orthographic-far-clip") = camera.Camera.GetOrthographicFarClip();
+            camera_node.append_attribute("orthographic-size") = camera.m_Camera.GetOrthographicSize();
+            camera_node.append_attribute("orthographic-near-clip") = camera.m_Camera.GetOrthographicNearClip();
+            camera_node.append_attribute("orthographic-far-clip") = camera.m_Camera.GetOrthographicFarClip();
         }
         if (entity.HasComponent<NativeScriptComponent>()) {
             component_node.attribute("NativeScriptComponent") = true;

@@ -22,6 +22,12 @@ namespace bf {
             return m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
         }
 
+        template<typename T, typename... Args>
+        T& AddOrReplaceComponent(Args&&... args)
+        {
+            return m_Scene->m_Registry.emplace_or_replace<T>(m_EntityHandle, std::forward<Args>(args)...);
+        }
+
         template<typename T>
         T &GetComponent() {
             BF_ASSERT(HasComponent<T>(), "Entity::GetComponent - Entity does not have component!");

@@ -22,8 +22,9 @@ file(GLOB GLAD_FILES extern/glad/src/glad.c)
 file(GLOB IMGUI_LIB_FILES extern/imgui/**.cpp)
 file(GLOB TRACY_PROFILER_FILES extern/tracy/TracyClient.cpp)
 file(GLOB ENTT_FILES extern/entt/entt.hpp)
+file(GLOB IMGUI_FILE_DIALOG_FILES extern/ImGuiFileDialog-0.6.4/**.cpp extern/ImGuiFileDialog-0.6.4/**.h extern/ImGuiFileDialog-0.6.4/dirent/dirent.h)
 
-file(GLOB EXTERNAL_SOURCE_FILES ${GLAD_FILES} ${IMGUI_LIB_FILES} ${TRACY_PROFILER_FILES} ${ENTT_FILES})
+file(GLOB EXTERNAL_SOURCE_FILES ${GLAD_FILES} ${IMGUI_LIB_FILES} ${TRACY_PROFILER_FILES} ${ENTT_FILES} ${IMGUI_FILE_DIALOG_FILES})
 
 # All
 file(GLOB SOURCE_FILES ${ENGINE_SOURCE_FILES} ${EXTERNAL_SOURCE_FILES})
@@ -40,7 +41,7 @@ include_directories(extern/entt)
 include_directories(extern/pugixml/src)
 include_directories(src)
 
-target_include_directories(blobfish PUBLIC extern/imgui extern/tracy extern/entt)
+target_include_directories(blobfish PUBLIC extern/imgui extern/tracy extern/entt extern/ImGuiFileDialog-0.6.4)
 
 # Subdirectories
 add_subdirectory(extern/glfw)

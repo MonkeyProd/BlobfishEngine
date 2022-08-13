@@ -4,6 +4,7 @@
 
 // todo remove this
 #include <glm/gtx/compatibility.hpp>
+#include <cstdint>
 
 class Apples : public NativeScript {
     float speed = 1.0f;
@@ -49,12 +50,13 @@ public:
 
 void EditorLayer::OnAttach() {
     m_scene = new Scene;
-    
+
     m_apples = Texture2D::Create("../../Sandbox/assets/apples.png");
     m_Framebuffer = Framebuffer::Create({1280, 720});
     m_camera = new EditorCamera;
 
     ImGuiIO &io = ImGui::GetIO();
+    ImGui::LoadIniSettingsFromDisk("../../Editor/Assets/editor_imgui_config.ini");
     float FontSize = 13;
     io.Fonts->AddFontFromFileTTF("../../Editor/Assets/Fonts/Ubuntu-Regular.ttf", FontSize);
     auto apples = m_scene->CreateEntity("apples");
@@ -64,12 +66,14 @@ void EditorLayer::OnAttach() {
 
     auto background = m_scene->CreateEntity("background");
     background.AddComponent<SpriteRendererComponent>();
-    background.GetComponent<SpriteRendererComponent>().Texture = Texture2D::Create("../../Sandbox/assets/chessmate.jpg");
+    background.GetComponent<SpriteRendererComponent>().Texture = Texture2D::Create(
+            "../../Sandbox/assets/chessmate.jpg");
     background.GetComponent<TransformComponent>().Scale = glm::vec2{5.0f};
 
     auto camera = m_scene->CreateEntity("camera");
     camera.AddComponent<NativeScriptComponent>().Bind<CameraFollow>();
-    camera.AddComponent<CameraComponent>().Camera.SetViewportSize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
+    camera.AddComponent<CameraComponent>().m_Camera.SetViewportSize((uint32_t) m_ViewportSize.x,
+                                                                    (uint32_t) m_ViewportSize.y);
 
     ImVec4 *colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -205,26 +209,55 @@ void EditorLayer::OnImGuiRender() {
             ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
         }
 
+        // file dialog to save scene
+        if (ImGuiFileDialog::Instance()->Display("SaveScene", ImGuiWindowFlags_NoCollapse,
+                                                 ImVec2(500, 350))) {
+            // action if OK
+            if (ImGuiFileDialog::Instance()->IsOk()) {
+                m_path = ImGuiFileDialog::Instance()->GetFilePathName();
+                Serializer s(m_scene);
+                s.Serialize(m_path);
+            }
+            // close
+            ImGuiFileDialog::Instance()->Close();
+        }
+        // file dialog to open scene
+        if (ImGuiFileDialog::Instance()->Display("OpenScene", ImGuiWindowFlags_NoCollapse,
+                                                 ImVec2(500, 350))) {
+            // action if OK
+            if (ImGuiFileDialog::Instance()->IsOk()) {
+                m_path = ImGuiFileDialog::Instance()->GetFilePathName();
+
+                auto *new_scene = new Scene;
+                Serializer s(new_scene);
+                s.Deserialize(m_path);
+                delete m_scene;
+                m_scene = new_scene;
+                m_scene->OnViewportResize((uint32_t) m_ViewportSize.x, (uint32_t) m_ViewportSize.y);
+            }
+            // close
+            ImGuiFileDialog::Instance()->Close();
+        }
+
         if (ImGui::BeginMenuBar()) {
             if (ImGui::BeginMenu("File")) {
                 // Disabling fullscreen would allow the window to be moved to the front of other windows,
                 // which we can't undo at the moment without finer window depth/z control.
                 //ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
-                if (ImGui::MenuItem("Exit")) {
-                    auto e = WindowCloseEvent();
-                    Application::getInstance()->EmitEvent(e);
+                if (ImGui::MenuItem("Exit", "Ctrl+Q")) {
+                    Exit();
                 }
-                if (ImGui::MenuItem("Save")) {
-                    Serializer s(m_scene);
-                    s.Serialize("test scene", "test.xml");
+                if (ImGui::MenuItem("New", "Ctrl+N")) {
+                    NewScene();
                 }
-                if(ImGui::MenuItem("Load")){
-                    Scene *new_scene = new Scene;
-                    Serializer s(new_scene);
-                    s.Deserialize("test.xml");
-                    m_scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-                    delete m_scene;
-                    m_scene = new_scene;
+                if (ImGui::MenuItem("Save", "Ctrl+S")) {
+                    Save();
+                }
+                if (ImGui::MenuItem("Save As", "Ctrl+Shift+S")) {
+                    SaveAs();
+                }
+                if (ImGui::MenuItem("Open", "Ctrl+O")) {
+                    Open();
                 }
                 ImGui::EndMenu();
             }
@@ -240,9 +273,70 @@ void EditorLayer::OnImGuiRender() {
     }
 }
 
+bool EditorLayer::OnKeyPressedEvent(KeyPressedEvent &event) {
+    if (event.getIsRepeat()) return false;
+
+    auto ctrl = Input::IsKeyPressed(Key::LEFT_CONTROL) or Input::IsKeyPressed(Key::RIGHT_CONTROL);
+    auto shift = Input::IsKeyPressed(Key::LEFT_SHIFT) or Input::IsKeyPressed(Key::RIGHT_SHIFT);
+    if (ctrl) {
+        switch (event.getKeycode()) {
+            case Key::Q:
+                Exit();
+                break;
+            case Key::N:
+                NewScene();
+                break;
+            case Key::O:
+                Open();
+                break;
+            case Key::S: {
+                if (shift)
+                    SaveAs();
+                else
+                    Save();
+            }
+
+        }
+        return true;
+    }
+    return false;
+}
+
+void EditorLayer::Exit() const {
+    auto e = WindowCloseEvent();
+    Application::getInstance()->EmitEvent(e);
+}
+
+void EditorLayer::NewScene() {
+    delete m_scene;
+    m_scene = new Scene;
+}
+
+void EditorLayer::Save() {
+    BF_LOG_INFO("SAVE");
+    if (not m_path.empty()) {
+        Serializer s(m_scene);
+        s.Serialize(m_path);
+    } else {
+        SaveAs();
+    }
+}
+
+void EditorLayer::SaveAs() {
+    BF_LOG_INFO("SAVE AS");
+    ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".xml", ".", "", 1, nullptr,
+                                            ImGuiFileDialogFlags_ConfirmOverwrite);
+}
+
+void EditorLayer::Open() {
+    BF_LOG_INFO("OPEN");
+    ImGuiFileDialog::Instance()->OpenDialog("OpenScene", "Choose File", ".xml", ".");
+}
+
 void EditorLayer::DisplayViewport() {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     if (ImGui::Begin("Viewport")) {
+
         ImGui::SliderFloat("Font scale", &ImGui::GetIO().FontGlobalScale, 1.0f, 3.0f);
         ImGui::Checkbox("Running", &running);
         if (running) {

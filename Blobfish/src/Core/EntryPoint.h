@@ -12,8 +12,8 @@ int main() {
     bf::Application *app = bf::create_application();
     BF_LOG_DEBUG("APPLICATION CREATED");
     app->run();
-    BF_LOG_DEBUG("SUCCESSFUL EXIT");
     delete app;
+    BF_LOG_DEBUG("SUCCESSFUL EXIT");
     return 0;
 }
 
