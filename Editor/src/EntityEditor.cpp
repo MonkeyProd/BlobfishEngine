@@ -163,7 +163,7 @@ void EntityEditor::DisplayEntityEditorWindow(Scene *scene, glm::vec2 &viewportSi
             ImGui::End();
 
         // Right mouse button click response
-        if (ImGui::BeginPopupContextWindow(nullptr, 1, false)) {
+        if (ImGui::BeginPopupContextWindow(nullptr, 1)) {
             if (ImGui::MenuItem("Add entity")) {
                 scene->CreateEntity();
             }
